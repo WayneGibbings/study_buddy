@@ -1,0 +1,12 @@
+bundle:
+  name: study-buddy
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    default: true
+    mode: development
+    workspace:
+      profile: databricks-free

@@ -1,0 +1,198 @@
+{
+  "exam": "Databricks Certified Data Engineer Professional",
+  "version": "November 30, 2025",
+  "exam_details": {
+    "num_items": 59,
+    "time_limit_minutes": 120,
+    "passing_note": "Multiple-choice, single answer per question"
+  },
+  "sections": [
+    {
+      "id": 1,
+      "title": "Developing Code for Data Processing using Python and SQL",
+      "weight_description": "Covers Python tooling, UDFs, Lakeflow Spark Declarative Pipelines, Spark Structured Streaming, Jobs, control flow, testing, environment config"
+    },
+    {
+      "id": 2,
+      "title": "Data Ingestion & Acquisition",
+      "weight_description": "Covers ingesting diverse data formats (Delta, Parquet, ORC, AVRO, JSON, CSV, XML, Text, Binary) from message buses and cloud storage; append-only pipelines"
+    },
+    {
+      "id": 3,
+      "title": "Data Transformation, Cleansing, and Quality",
+      "weight_description": "Covers Spark SQL/PySpark transformations (window functions, joins, aggregations), quarantining bad data"
+    },
+    {
+      "id": 4,
+      "title": "Data Sharing and Federation",
+      "weight_description": "Covers Delta Sharing (D2D, D2O), Lakehouse Federation, sharing live data across platforms"
+    },
+    {
+      "id": 5,
+      "title": "Monitoring and Alerting",
+      "weight_description": "Covers system tables, Query Profiler, Spark UI, REST APIs/CLI monitoring, Lakeflow event logs, SQL Alerts, job notifications"
+    },
+    {
+      "id": 6,
+      "title": "Cost & Performance Optimisation",
+      "weight_description": "Covers Unity Catalog managed tables, delta optimisation (deletion vectors, liquid clustering), data skipping, file pruning, CDF, query profile analysis"
+    },
+    {
+      "id": 7,
+      "title": "Ensuring Data Security and Compliance",
+      "weight_description": "Covers ACLs/least privilege, row filters/column masks, anonymisation/pseudonymisation, PII detection/masking, data purging/retention"
+    },
+    {
+      "id": 8,
+      "title": "Data Governance",
+      "weight_description": "Covers data discoverability/metadata, Unity Catalog permission inheritance"
+    },
+    {
+      "id": 9,
+      "title": "Debugging and Deploying",
+      "weight_description": "Covers Spark UI, cluster logs, system tables, query profiles, job repairs/parameter overrides, Lakeflow event logs, Databricks Asset Bundles, Git-based CI/CD"
+    },
+    {
+      "id": 10,
+      "title": "Data Modelling",
+      "weight_description": "Covers scalable data models with Delta Lake, Liquid Clustering, partitioning vs ZOrder, dimensional modelling"
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "section_id": 10,
+      "section_title": "Data Modelling",
+      "objective": "Understand Delta Lake's catalog-metastore operations and ACID compliance behaviour.",
+      "question_text": "A Delta Lake table was created with the following query:\n\n```sql\nCREATE TABLE prod.sales_by_stor\nUSING DELTA\nLOCATION \"/mnt/prod/sales_by_store\"\n```\n\nRealising that the original query had a typographical error, the code below was executed:\n\n```sql\nALTER TABLE prod.sales_by_stor RENAME TO prod.sales_by_store\n```\n\nWhich result will occur after running the second command?",
+      "options": {
+        "A": "All related files and metadata are dropped and recreated in a single ACID transaction.",
+        "B": "The table name change is recorded in the Delta transaction log.",
+        "C": "A new Delta transaction log is created for the renamed table.",
+        "D": "The table reference in the metastore is updated."
+      },
+      "correct_answer": "D",
+      "explanation": "For an external (unmanaged) Delta table created with a `LOCATION`, `ALTER TABLE RENAME` only updates the metastore pointer. The underlying data files and Delta transaction log at the specified location remain unchanged."
+    },
+    {
+      "id": 2,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
+      "objective": "Understand Spark Structured Streaming behaviour and determine the optimal approach for production SLA-ready pipelines.",
+      "question_text": "A Structured Streaming job deployed to production has been experiencing delays during peak hours of the day. Currently, during normal execution, each microbatch of data is processed in under 3 seconds. During peak hours of the day, execution time for each microbatch becomes very inconsistent, sometimes exceeding 30 seconds. The streaming write is currently configured with a 10-second trigger interval.\n\nHolding all other variables constant and assuming records need to be processed in less than 10 seconds, which adjustment will meet the requirement?",
+      "options": {
+        "A": "Use the trigger once option and configure a Databricks job to execute the query every 8 seconds; this ensures all backlogged records are processed with each batch.",
+        "B": "Decrease the trigger interval to 5 seconds; triggering batches more frequently may prevent records from backing up and large batches from causing a spill.",
+        "C": "Decrease the trigger interval to 5 seconds; triggering batches more frequently allows idle executors to begin processing the next batch while longer-running tasks from previous batches finish.",
+        "D": "The trigger interval cannot be modified without modifying the checkpoint directory; to maintain the current stream state, increase the number of shuffle partitions to maximise parallelism."
+      },
+      "correct_answer": "B",
+      "explanation": "Reducing the trigger interval to 5 seconds means each microbatch picks up fewer records, reducing the likelihood of large batch spills during peak hours and keeping processing within the 10-second SLA."
+    },
+    {
+      "id": 3,
+      "section_id": 10,
+      "section_title": "Data Modelling",
+      "objective": "Design and implement scalable data models using Delta Lake to manage large datasets.",
+      "question_text": "A Delta Lake table representing metadata about content posts from users has the following schema:\n\n```\nuser_id LONG, post_text STRING, post_id STRING,\nlongitude FLOAT, latitude FLOAT,\npost_time TIMESTAMP, date DATE\n```\n\nBased on the above schema, which column is a good candidate for partitioning the Delta Table?",
+      "options": {
+        "A": "`post_id`",
+        "B": "`post_time`",
+        "C": "`date`",
+        "D": "`user_id`"
+      },
+      "correct_answer": "C",
+      "explanation": "The `date` column (`DATE` type) has low cardinality relative to high-cardinality fields like `post_id` or `post_time`, making it an appropriate partitioning column. It avoids the small-file problem and supports efficient time-based pruning."
+    },
+    {
+      "id": 4,
+      "section_id": 8,
+      "section_title": "Data Governance",
+      "objective": "Demonstrate understanding of Unity Catalog permission inheritance model.",
+      "question_text": "A table named `user_ltv` is being used to create a view that will be used by data analysts on various teams. Users in the workspace are configured into groups, which are used for setting up data access using ACLs.\n\nThe `user_ltv` table has the following schema:\n\n```\nemail STRING, age INT, ltv INT\n```\n\nThe following view definition is executed:\n\n```sql\nCREATE VIEW email_ltv AS\nSELECT\n  CASE WHEN is_member('marketing') THEN email\n       ELSE 'REDACTED'\n  END AS email,\n  ltv\nFROM user_ltv\n```\n\nAn analyst who is not a member of the marketing group executes the following query:\n\n```sql\nSELECT * FROM email_ltv\n```\n\nWhat will be the result of this query?",
+      "options": {
+        "A": "Only the `email` and `ltv` columns will be returned; the `email` column will contain the string `'REDACTED'` in each row.",
+        "B": "Three columns will be returned, but one column will be named `'REDACTED'` and contain only null values.",
+        "C": "Only the `email` and `ltv` columns will be returned; the `email` column will contain all null values.",
+        "D": "The `email` and `ltv` columns will be returned with the values in `user_ltv`."
+      },
+      "correct_answer": "A",
+      "explanation": "The view's `CASE WHEN` logic checks `is_member('marketing')`. Since the analyst is not in the marketing group, the `ELSE` branch returns the literal string `'REDACTED'` for each row. The view only projects `email` and `ltv`, so exactly two columns are returned."
+    },
+    {
+      "id": 5,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
+      "objective": "Choose the appropriate configs for environments and dependencies, high memory for notebook tasks, and auto-optimisation to disallow retries.",
+      "question_text": "The business reporting team requires that data for their dashboards be updated every hour. The total processing time for the pipeline, which extracts, transforms, and loads data for its runs, is 10 minutes.\n\nAssuming normal operating conditions, which configuration will meet their service-level agreement requirements with the lowest cost?",
+      "options": {
+        "A": "Schedule a job to execute the pipeline once an hour on a dedicated interactive cluster.",
+        "B": "Schedule a job to execute the pipeline once an hour on a new job cluster.",
+        "C": "Schedule a Structured Streaming job with a trigger interval of 60 minutes.",
+        "D": "Configure a job that executes every time new data lands in a given directory."
+      },
+      "correct_answer": "B",
+      "explanation": "A scheduled job on a new job cluster spins up only when needed and terminates after completion. This avoids the cost of an always-on interactive cluster and is the most cost-effective option for a 10-minute hourly batch workload."
+    },
+    {
+      "id": 6,
+      "section_id": 7,
+      "section_title": "Ensuring Data Security and Compliance",
+      "objective": "Understand the Notebook development environment, variable management and creating secure, configurable code.",
+      "question_text": "The security team is exploring whether the Databricks secrets module can be leveraged for connecting to an external database.\n\nAfter testing the code with all Python variables being defined with strings, they upload the password to the secrets module and configure the correct permissions for the currently active user. They modify their code to the following (leaving all other variables unchanged):\n\n```python\npassword = dbutils.secrets.get(scope=\"db_creds\", key=\"jdbc_password\")\n\nprint(password)\n\ndf = (spark\n    .read\n    .format(\"jdbc\")\n    .option(\"url\", connection)\n    .option(\"dbtable\", tablename)\n    .option(\"user\", username)\n    .option(\"password\", password)\n)\n```\n\nWhat will happen when this code is executed?",
+      "options": {
+        "A": "The connection to the external table will succeed; the string `\"REDACTED\"` will be printed.",
+        "B": "The connection to the external table will succeed; the string value of the password will be printed in plain text.",
+        "C": "An interactive input box will appear in the notebook; if the right password is provided, the connection will succeed, and the password will be printed in plain text.",
+        "D": "An interactive input box will appear in the notebook; if the right password is provided, the connection will succeed, and the encoded password will be saved to DBFS."
+      },
+      "correct_answer": "A",
+      "explanation": "`dbutils.secrets.get` retrieves the actual secret value for use in code (e.g., JDBC connections work correctly). However, Databricks redacts secret values in notebook output — `print(password)` displays `\"REDACTED\"` rather than the plain-text value."
+    },
+    {
+      "id": 7,
+      "section_id": 6,
+      "section_title": "Cost & Performance Optimisation",
+      "objective": "Understand the optimisation techniques used by Databricks to ensure performance of queries on large datasets (data skipping, file pruning, etc.).",
+      "question_text": "A data ingestion task requires a 1-TB JSON dataset to be written out to Parquet with a target part-file size of 512 MB. Because Parquet is being used instead of Delta Lake, built-in file-sizing features such as Auto-Optimize & Auto-Compaction cannot be used.\n\nWhich approach will work without rearranging the data?",
+      "options": {
+        "A": "Ingest the data, execute the narrow transformations, repartition to 2,048 partitions (1TB×1024×1024/512), and then write to Parquet.",
+        "B": "Set `spark.sql.adaptive.advisoryPartitionSizeInBytes` to 512 MB, ingest the data, execute the narrow transformations, coalesce to 2,048 partitions, and then write to Parquet.",
+        "C": "Set `spark.sql.files.maxPartitionBytes` to 512 MB, ingest the data, execute the narrow transformations, and then write to Parquet.",
+        "D": "Set `spark.sql.shuffle.partitions` to 2,048, ingest the data, execute the narrow transformations, optimise the data by sorting it (which automatically repartitions the data), and then write to Parquet."
+      },
+      "correct_answer": "C",
+      "explanation": "`spark.sql.files.maxPartitionBytes` controls the maximum size of each partition when reading files. Setting it to 512 MB means each read partition — and therefore each output file — targets ~512 MB, without requiring a shuffle (`repartition`) or sort that would rearrange the data."
+    },
+    {
+      "id": 8,
+      "section_id": 10,
+      "section_title": "Data Modelling",
+      "objective": "Apply Delta Lake clone to learn how shallow and deep clones interact with source/target tables.",
+      "question_text": "The marketing team wants to share data in an aggregate table with the sales organisation, but the field names used by the teams do not match, and a number of marketing-specific fields have not been approved for the sales organisation.\n\nWhich solution addresses the situation while emphasising simplicity?",
+      "options": {
+        "A": "Create a view on the marketing table selecting only those fields approved for the sales team; alias the names of any fields that should be standardised to the sales naming conventions.",
+        "B": "Create a new table with the required schema and use Delta Lake's `DEEP CLONE` functionality to sync up changes committed to one table to the corresponding table.",
+        "C": "Use a `CTAS` statement to create a derivative table from the marketing table, and then configure a production job to propagate the changes.",
+        "D": "Add a parallel table write to the current production pipeline, updating a new sales table that varies as required from the marketing table."
+      },
+      "correct_answer": "A",
+      "explanation": "A view is the simplest solution: it selects only approved columns, aliases them to match sales naming conventions, and automatically reflects changes to the underlying marketing table — no additional jobs or data duplication required."
+    },
+    {
+      "id": 9,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
+      "objective": "Create a multi-task job with multiple dependencies.",
+      "question_text": "A Databricks job has been configured with three tasks, each of which is a Databricks notebook. Task A does not depend on other tasks. Tasks B and C run in parallel, with each having a serial dependency on Task A.\n\nWhat will be the resulting state if Tasks A and B complete successfully but Task C fails during a scheduled run?",
+      "options": {
+        "A": "All logic expressed in the notebook associated with Tasks A and B will have been successfully completed; some operations in Task C may have been completed successfully.",
+        "B": "Unless all tasks are completed successfully, no changes will be committed to the Lakehouse; because Task C failed, all commits will be rolled back automatically.",
+        "C": "All logic expressed in the notebook associated with Tasks A and B will have been successfully completed; any changes made in Task C will be rolled back due to task failure.",
+        "D": "Because all tasks are managed as a dependency graph, no changes will be committed to the Lakehouse until all tasks have successfully been completed."
+      },
+      "correct_answer": "A",
+      "explanation": "Databricks Jobs execute each task independently. Tasks A and B completed and their changes are committed. Task C's failure means some of its operations may have run before the error — there is no automatic cross-task rollback mechanism."
+    }
+  ]
+}
