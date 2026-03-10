@@ -1,0 +1,1020 @@
+{
+  "exam": "Databricks Certified Data Engineer Professional",
+  "version": "Practice Test 2",
+  "exam_details": {
+    "num_items": 63,
+    "time_limit_minutes": null,
+    "passing_note": "Multiple-choice, single answer per question unless stated otherwise"
+  },
+  "sections": [],
+  "questions": [
+    {
+      "id": 1,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand environment variable behaviour across notebooks on a Databricks cluster.",
+      "question_text": "While creating a cluster for the engineering team, the Databricks admin added the `ENV=PROD` in Environment variables. The engineering team is using this environment variable for fetching data from the S3 bucket in the `fetch_details` notebook.\n\nA new member joins the team and needs to fetch data from the DEV environment instead of PROD. The member runs the following command in a new notebook to update the environment variable:\n\n```python\nimport os\nos.environ[\"ENV\"] = 'DEV'\n```\n\nWhich of the following statements describes the effect of the command?",
+      "options": {
+        "A": "The environment variable's value will be changed in the newly created notebook and the fetch_details notebook will also start using DEV.",
+        "B": "The command will fail with an error message as the environment variable cannot be changed.",
+        "C": "The command will be executed successfully but the environment variable will not be changed.",
+        "D": "The environment variable's value will be changed but the value in all other notebooks will remain PROD.",
+        "E": "The environment variable's value will be updated in the cluster properties and all the notebooks attached to the cluster will start using the updated value."
+      },
+      "correct_answer": "D",
+      "explanation": "Environment variables can be changed within a notebook, but the change will not reflect in other notebooks. If an environment variable is changed in notebook A, the effect cannot be experienced in notebook B."
+    },
+    {
+      "id": 2,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand secret scope access permissions in Databricks.",
+      "question_text": "The data engineering team has a secret scope named \"prod-scope\" that contains sensitive secrets in a production workspace.\n\nA data engineer in the team is writing a security and compliance documentation, and wants to explain who could use the secrets in this secret scope.\n\nWhich of the following roles is able to use the secrets in the specified secret scope?",
+      "options": {
+        "A": "Workspace Administrators",
+        "B": "Secret creators",
+        "C": "Users with MANAGE permission on the secret scope",
+        "D": "Users with READ permission on the secret scope",
+        "E": "All the above are able to use the secrets in the secret scope"
+      },
+      "correct_answer": "E",
+      "explanation": "Administrators, secret creators, and users granted access permission can use Databricks secrets. Permission levels are MANAGE (change ACLs, read/write), WRITE (read/write), and READ (read and list). Workspace administrators have MANAGE permissions to all secret scopes."
+    },
+    {
+      "id": 3,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand SQL metrics displayed in the Spark UI.",
+      "question_text": "In Spark UI, which of the following SQL metrics is displayed on the query's details page?",
+      "options": {
+        "A": "Query duration",
+        "B": "Query execution time",
+        "C": "Succeeded Jobs",
+        "D": "Spill size",
+        "E": "Number of input rows"
+      },
+      "correct_answer": "D",
+      "explanation": "The Spark UI query details page displays general information about query execution time, duration, associated jobs, and the query execution DAG. It also shows SQL metrics in physical operator blocks. 'Spill size' is one such metric, representing the number of bytes spilled to disk from memory in the operator."
+    },
+    {
+      "id": 4,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Databricks REST API endpoints for job run metadata retrieval.",
+      "question_text": "A data engineer wants to use Databricks REST API to retrieve the metadata of a job run using its `run_id`.\n\nWhich of the following REST API calls achieves this requirement?",
+      "options": {
+        "A": "Send POST request to the endpoint 'api/2.1/jobs/runs/get'",
+        "B": "Send GET request to the endpoint 'api/2.1/jobs/runs/get'",
+        "C": "Send POST request to the endpoint 'api/2.1/jobs/runs/get-output'",
+        "D": "Send GET request to the endpoint 'api/2.1/jobs/runs/get-output'",
+        "E": "Send GET request to the endpoint 'api/2.1/jobs/runs/get-metadata'"
+      },
+      "correct_answer": "B",
+      "explanation": "Sending GET requests to the endpoint '/api/2.1/jobs/runs/get' allows you to retrieve the metadata of a job run using its run_id."
+    },
+    {
+      "id": 5,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand shell commands and working directory behaviour in Databricks Repos.",
+      "question_text": "Which of the following commands prints the current working directory of a notebook in Databricks Repos?",
+      "options": {
+        "A": "`%sh pwd`",
+        "B": "`print(sys.path)`",
+        "C": "`os.path.abspath()`",
+        "D": "`os.environ['PYTHONPATH']`",
+        "E": "In Databricks Repos, the working directory of any notebook is '/databricks/driver'"
+      },
+      "correct_answer": "A",
+      "explanation": "The `%sh` magic command allows you to run shell code in a notebook. The `pwd` command is an acronym for print working directory."
+    },
+    {
+      "id": 6,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand how Python files are identified as notebooks in Databricks.",
+      "question_text": "Which of the following establishes a Python file as a notebook in Databricks?",
+      "options": {
+        "A": "The magic command `%databricks` on the first line of the file's source code",
+        "B": "The comment `# Databricks notebook source` on the first line of the file's source code",
+        "C": "The import of the `dbutils.notebook` module in the file's source code",
+        "D": "The creation of a spark session using `SparkSession.builder.getOrCreate()` in the file's source code",
+        "E": "None of the above statements is correct. Notebooks are binary files with .pydb file extension."
+      },
+      "correct_answer": "B",
+      "explanation": "You can convert Python, SQL, Scala, and R scripts to single-cell notebooks by adding the comment `# Databricks notebook source` to the first cell of the file."
+    },
+    {
+      "id": 7,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Databricks CLI commands for file operations with DBFS.",
+      "question_text": "A data engineer wants to upload a CSV file from local system storage to the DBFS of a Databricks workspace. They have Databricks CLI already configured on the local system.\n\nWhich of the following Databricks CLI commands can the data engineer use to complete this task?",
+      "options": {
+        "A": "workspace",
+        "B": "fs",
+        "C": "jobs",
+        "D": "configure",
+        "E": "libraries"
+      },
+      "correct_answer": "B",
+      "explanation": "Databricks CLI provides the 'fs' utility to interact with DBFS. The 'fs cp' command allows copying files to and from DBFS, e.g. `databricks fs cp C:\\source\\file.csv dbfs:/target/file.csv --overwrite`."
+    },
+    {
+      "id": 8,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand different software testing approaches.",
+      "question_text": "Which of the following statements correctly describes Unit Testing?",
+      "options": {
+        "A": "It's an approach to simulate a user experience to ensure that the application can run properly under real-world scenarios",
+        "B": "It's an approach to test the interaction between subsystems of an application to ensure that modules work properly as a group.",
+        "C": "It's an approach to test individual units of code to determine whether they still work as expected if new changes are made to them in the future",
+        "D": "It's an approach to verify if each feature of the application works as per the business requirements",
+        "E": "It's an approach to measure the reliability, speed, scalability, and responsiveness of an application"
+      },
+      "correct_answer": "C",
+      "explanation": "Unit testing is an approach to testing units of code, such as functions. If you make any changes to them in the future, you can use unit tests to determine whether they still work as expected. Assertions are used in unit tests to check if certain assumptions remain true."
+    },
+    {
+      "id": 9,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand different software testing approaches.",
+      "question_text": "Which of the following statements correctly describes Integration Testing?",
+      "options": {
+        "A": "It's an approach to simulate a user experience to ensure that the application can run properly under real-world scenarios",
+        "B": "It's an approach to test the interaction between subsystems of an application to ensure that modules work properly as a group.",
+        "C": "It's an approach to test individual units of code to determine whether they still work as expected if new changes are made to them in the future",
+        "D": "It's an approach to verify if each feature of the application works as per the business requirements",
+        "E": "It's an approach to measure the reliability, speed, scalability, and responsiveness of an application"
+      },
+      "correct_answer": "B",
+      "explanation": "Integration Testing is an approach to testing the interaction between subsystems of an application. It tests that the software modules are integrated logically and tested as a group."
+    },
+    {
+      "id": 10,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand job failure repair strategies in Databricks.",
+      "question_text": "A data engineer has a Job with multiple tasks that takes more than 2 hours to complete. In the last run, the final task unexpectedly failed.\n\nWhich of the following actions can the data engineer perform to complete this run while minimizing the execution time?",
+      "options": {
+        "A": "They can rerun this Job Run to execute all the tasks",
+        "B": "They can repair this Job Run so only the failed tasks will be re-executed",
+        "C": "They need to delete the failed Run, and start a new Run for the Job",
+        "D": "They can keep the failed Run, and simply start a new Run for the Job",
+        "E": "They can run the Job in Production mode which automatically retries execution in case of errors"
+      },
+      "correct_answer": "B",
+      "explanation": "You can repair failed multi-task jobs by running only the subset of unsuccessful tasks and any dependent tasks. Because successful tasks are not re-run, this feature reduces the time and resources required to recover from unsuccessful job runs."
+    },
+    {
+      "id": 11,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand best practices for preparing notebooks for production scheduling.",
+      "question_text": "As a general rule, before scheduling notebooks in production, which of the following commands should be removed from the code?",
+      "options": {
+        "A": "Magic commands",
+        "B": "Overwrite table commands",
+        "C": "Markup language commands",
+        "D": "Display commands",
+        "E": "Import commands"
+      },
+      "correct_answer": "D",
+      "explanation": "Before scheduling notebooks in production, you should comment out unwanted file removal or table dropping commands added during development, and display actions or SQL queries added for debugging purposes."
+    },
+    {
+      "id": 12,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the purpose and use of Python wheels in Databricks.",
+      "question_text": "Which of the following statements best describes the use of Python wheels in Databricks?",
+      "options": {
+        "A": "A Python `%wheel` is a magic command allows to install Python packages on Databricks Clusters",
+        "B": "A Python wheel is a virtual environment for isolating the Python interpreter, libraries and modules in a notebook from other notebooks.",
+        "C": "A Python wheel is a repository for hosting, managing, and distributing Python binaries and artifacts in a Databricks workspace",
+        "D": "A Python wheel is a binary distribution format for installing custom Python code packages on Databricks Clusters",
+        "E": "A Python wheel is package installer tool alternative to 'pip'"
+      },
+      "correct_answer": "D",
+      "explanation": "Python wheel is a binary distribution format for installing custom Python code packages on Databricks Clusters. A wheel is a ZIP-format archive with the .whl extension."
+    },
+    {
+      "id": 13,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand shell script execution behaviour on Databricks clusters.",
+      "question_text": "A data analyst is running a shell script in all the notebooks attached to the cluster. The shell script contains a long set of commands which is taking a lot of time to complete. As a data engineer, which of the following statements will you suggest to the data analyst?",
+      "options": {
+        "A": "Use the init script to execute the shell script faster",
+        "B": "Run the script as the Workspace admin",
+        "C": "Use `%md` to run the script faster",
+        "D": "Increase the number of worker nodes to speed up the script",
+        "E": "Run the notebook using Databricks API"
+      },
+      "correct_answer": "A",
+      "explanation": "By using `%sh` to run a shell script in a Databricks notebook, you end up using only the driver node of the cluster. If you need to run the shell script on the worker nodes as well, you will need to add it as an init script on the cluster."
+    },
+    {
+      "id": 14,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand REST API response structures for job creation.",
+      "question_text": "Which of the following is a valid response to a JSON workload passed to `2.0/jobs/create` endpoint of Databricks REST API?",
+      "options": {
+        "A": "`{ \"job_name\": \"name\" }`",
+        "B": "`{ \"status\": 200 }`",
+        "C": "`{ \"job_id\": 13746 }`",
+        "D": "`{ \"job_id\": \"13746\" }`",
+        "E": "`{ job_id: 13746 }`"
+      },
+      "correct_answer": "C",
+      "explanation": "The response structure of the `2.0/jobs/create` endpoint contains a single key `job_id` with a value type of `INT64`. So, the correct response is `{ \"job_id\": 13746 }`."
+    },
+    {
+      "id": 15,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand DBFS mount point management commands.",
+      "question_text": "A data engineer wants to unmount a mount point mounted at `/mnt/mountPoint1`. Which of the following commands can be used by the data engineer?",
+      "options": {
+        "A": "`dbutils.unmount(\"/mnt/mountPoint1\")`",
+        "B": "`dbutils.mount.unmount(\"/mnt/mountPoint1\")`",
+        "C": "`dbutils.fs.unmount(\"/mnt/mountPoint1\")`",
+        "D": "`dbutils.widgets(\"/mnt/mountPoint1\")`",
+        "E": "`dbutils.remove_mount(\"/mnt/mountPoint1\")`"
+      },
+      "correct_answer": "C",
+      "explanation": "`dbutils.fs.unmount()` can be used to unmount a mount point in Databricks."
+    },
+    {
+      "id": 16,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand notebook cell output size limitations in Databricks Jobs.",
+      "question_text": "A data engineer has created a new job with a single notebook task intended to run daily at 5 PM. The task intends to run the notebook named `show_regular.py` which contains 5 cells where each cell outputs data in the form of a PySpark DataFrame. The size of the outputs are as follows:\n\nCell 1: 5.2 MB, Cell 2: 6.1 MB, Cell 3: 4.4 MB, Cell 4: 5.3 MB, Cell 5: 2.5 MB\n\nThe job fails on its initial run and the data engineer is clueless about the failure. Which of the data constraint forced the job to fail?",
+      "options": {
+        "A": "The individual cell output is limited to 6 MB which caused the job to fail.",
+        "B": "The output size of all the cells in a notebook should not exceed 20 MB. Since the total size of all the cells combined is more than 20 MB, the job failed.",
+        "C": "The output size of the first cell cannot exceed 5 MB in size, forcing the job to fail.",
+        "D": "The job failed due to multiple reasons as the size of any individual cell output in a notebook cannot increase by 6 MB and the total size of all the outputs cannot be more than 18 MB.",
+        "E": "The reason for the job failure cannot be determined solely by the size of the output as there is no limitation on the output size of the cells in a notebook."
+      },
+      "correct_answer": "B",
+      "explanation": "In Databricks, when you add a notebook task to a job, the size of an individual cell cannot exceed 8 MB whereas the total size of all the cells cannot be more than 20 MB. None of the cells exceeds 8 MB but the total size (23.5 MB) is greater than 20 MB, causing the failure."
+    },
+    {
+      "id": 17,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand SQL privilege grant syntax in Databricks.",
+      "question_text": "Which of the following commands can a data engineer use to grant full permissions to the HR team on the table `employees`?",
+      "options": {
+        "A": "`GRANT FULL PRIVILEGES ON TABLE employees TO hr_team`",
+        "B": "`GRANT FULL PRIVILEGES ON TABLE hr_team TO employees`",
+        "C": "`GRANT ALL PRIVILEGES ON TABLE employees TO hr_team`",
+        "D": "`GRANT ALL PRIVILEGES ON TABLE hr_team TO employees`",
+        "E": "`GRANT SELECT, MODIFY, CREATE, READ_METADATA ON TABLE employees TO hr_team`"
+      },
+      "correct_answer": "C",
+      "explanation": "`ALL PRIVILEGES` is used to grant full permissions on an object to a user or group. It translates into SELECT, CREATE, MODIFY, USAGE, and READ_METADATA privileges."
+    },
+    {
+      "id": 18,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the difference between jobs/reset and jobs/update REST API endpoints.",
+      "question_text": "Which of the following statements depicts the correct usage of `2.0/jobs/update` and `2.0/jobs/reset` endpoints of the Databricks REST API?",
+      "options": {
+        "A": "`2.0/jobs/reset` is used to overwrite an existing job with its default settings whereas `2.0/jobs/update` is used to add, change or remove specific settings of an existing job.",
+        "B": "`2.0/jobs/reset` is used to overwrite all the settings of an existing job with the settings passed in the JSON payload whereas `2.0/jobs/update` is used to update the ID of an existing job.",
+        "C": "`2.0/jobs/reset` is used to remove all the jobs with a specific name from the Workspace whereas `2.0/jobs/update` is used to add, change or remove specific settings of an existing job.",
+        "D": "`2.0/jobs/reset` is used to overwrite all the settings of an existing job with the settings passed in the JSON payload whereas `2.0/jobs/update` is used to add, change or remove specific settings of an existing job.",
+        "E": "`2.0/jobs/reset` is used to delete the details of all the previous job runs of an existing job whereas `2.0/jobs/update` is used to update the ID of an existing job."
+      },
+      "correct_answer": "D",
+      "explanation": "Both endpoints are used to change the settings of an existing job. `2.0/jobs/update` is for adding, changing, or removing specific settings. `2.0/jobs/reset` overwrites all settings with the new ones passed in the JSON payload."
+    },
+    {
+      "id": 19,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand language interoperability in Databricks notebooks.",
+      "question_text": "Which of the following statements about interoperability between supported languages in Databricks notebooks is true?",
+      "options": {
+        "A": "Variables declared in the Python language cells can only be accessed in cells with default language as Python or Scala.",
+        "B": "Variables declared in Python can be used in cells with default language as Python, Scala or R.",
+        "C": "Variables declared in one language can be used in all other languages as Databricks supports full interoperability.",
+        "D": "Variables declared in one language cannot be accessed in the cells using any other language.",
+        "E": "SQL variables are the only ones that can be used in cells having other languages."
+      },
+      "correct_answer": "D",
+      "explanation": "Databricks does not support interoperability between different languages in terms of variables declared in different languages. A variable declared in one language cannot be accessed through other languages."
+    },
+    {
+      "id": 20,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand S3 bucket mounting options and access control in Databricks.",
+      "question_text": "An engineering team has a lot of members ranging from data analysts to data scientists. Some of the team members use an S3 bucket to access the data but some of the new users are not familiar with AWS S3. The team decides to mount the S3 bucket to DBFS.\n\nWhich of the following methods should be used by the team if they need to give read-only access to the mounted S3 bucket?",
+      "options": {
+        "A": "Mount the S3 bucket using AWS keys - access_key and secret_key",
+        "B": "Add `readOnly = True` in `dbutils.fs.mount()`",
+        "C": "Mounting of S3 bucket with read-only access is not possible in Databricks",
+        "D": "Mount the S3 bucket using the AWS instance profile",
+        "E": "Select the readOnly option while mounting the S3 bucket"
+      },
+      "correct_answer": "D",
+      "explanation": "To restrict access to a mounted S3 bucket, you need to mount using the AWS Instance Profile. The process includes configuring your cluster with an Instance Profile first and then mounting the bucket. The permissions granted will be equivalent to those acquired by the Instance Profile."
+    },
+    {
+      "id": 21,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand cluster permission levels in Databricks.",
+      "question_text": "Which of the following describes the minimal permissions a data engineer needs to modify permissions of an existing cluster?",
+      "options": {
+        "A": "\"Can Restart\" privilege on the cluster",
+        "B": "\"Can Manage\" privilege on the cluster",
+        "C": "Cluster creation allowed + \"Can Restart\" privileges on the cluster",
+        "D": "Cluster creation allowed + \"Can Manage\" privileges on the cluster",
+        "E": "Only administrators can modify permissions on existing clusters"
+      },
+      "correct_answer": "B",
+      "explanation": "There are four permission levels for a cluster: No Permissions, Can Attach To, Can Restart, and Can Manage. Modifying permissions requires 'Can Manage' privilege on the cluster."
+    },
+    {
+      "id": 22,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Identify Slowly Changing Dimension (SCD) types from table examples.",
+      "question_text": "Given the following two versions of a Delta Lake table before and after an update:\n\nBefore:\n| user_id | name  | address              | city   | current | start_date | end_date |\n|---------|-------|----------------------|--------|---------|------------|----------|\n| 001     | John  | 4, Oxford Street     | London | True    | 1/1/2022   | NULL     |\n| 002     | Sarah | 99, Victor Hugo Street| Paris  | True    | 1/1/2022   | NULL     |\n\nAfter:\n| user_id | name  | address              | city   | current | start_date | end_date  |\n|---------|-------|----------------------|--------|---------|------------|----------|\n| 001     | John  | 4, Oxford Street     | London | False   | 1/1/2022   | 25/1/2023 |\n| 002     | Sarah | 99, Victor Hugo Street| Paris  | True    | 1/1/2022   | NULL      |\n| 001     | John  | 25, King's Road      | London | True    | 25/1/2023  | NULL      |\n\nWhich SCD Type is this table?",
+      "options": {
+        "A": "SCD Type 0",
+        "B": "SCD Type 1",
+        "C": "SCD Type 2",
+        "D": "It's a combination of Type 0 and Type 2 SCDs",
+        "E": "More information is needed to determine the SCD Type of this table"
+      },
+      "correct_answer": "C",
+      "explanation": "In a Type 2 SCD table, a new record is added with the changed data values, and this new record becomes the current active record, while the old record is marked as no longer active. Type 2 SCD retains the full history of values."
+    },
+    {
+      "id": 23,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Interpret Spark UI task summary metrics to identify data distribution issues.",
+      "question_text": "A data engineer is analyzing a Spark job via the Spark UI. They have the following summary metrics for 27 completed tasks in a particular stage:\n\n| Metric | Min | 25th percentile | Median | 75th percentile | Max |\n|---|---|---|---|---|---|\n| Duration | 0.1 ms | 2 s | 2 s | 3 s | 3 s |\n| GC Time | 0.0 ms | 0.0 ms | 44.0 ms | 51.0 ms | 0.2 s |\n| Input Size / Records | 3 KiB / 16 | 179 KiB / 49 | 183.9 KiB / 55 | 186.7 KiB / 67 | 187 KiB / 276 |\n| Shuffle Write Size / Records | 0.4 KiB / 16 | 6.1 KiB / 49 | 6.9 KiB / 55 | 8.1 KiB / 67 | 8.8 KiB / 276 |\n\nWhich conclusion can the data engineer draw from the above statistics?",
+      "options": {
+        "A": "All tasks are operating over partitions with even amounts of data",
+        "B": "All tasks are operating over empty or near empty partitions",
+        "C": "All tasks are operating over partitions with larger skewed amounts of data.",
+        "D": "Number of tasks are operating over partitions with larger skewed amounts of data.",
+        "E": "Number of tasks are operating over near empty partitions"
+      },
+      "correct_answer": "E",
+      "explanation": "If computation was completely symmetric across tasks, all statistics would be clustered tightly around the 50th percentile. Here, the distribution is reasonable except for the 'Min' values near zero, suggesting near-empty partitions for some tasks."
+    },
+    {
+      "id": 24,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Cron syntax usage in Databricks Jobs.",
+      "question_text": "Which of the following describes Cron syntax in Databricks Jobs?",
+      "options": {
+        "A": "It's an expression to represent the maximum concurrent runs of a job",
+        "B": "It's an expression to represent the retry policy of a job",
+        "C": "It's an expression to describe the email notification events (start, success, failure)",
+        "D": "It's an expression to represent the run timeout of a job",
+        "E": "It's an expression to represent complex job schedule that can be defined programmatically"
+      },
+      "correct_answer": "E",
+      "explanation": "To define a schedule for a Databricks job, you can either interactively specify the period and starting time, or write a Cron Syntax expression. The Cron Syntax allows to represent complex job schedules that can be defined programmatically."
+    },
+    {
+      "id": 25,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand multi-task job failure behaviour in Databricks.",
+      "question_text": "Given a multi-task job where Task_1 depends on no other tasks, and Task_2 and Task_3 both depend on Task_1.\n\nIf there is an error in the notebook 1 that is associated with Task 1, which statement describes the run result of this job?",
+      "options": {
+        "A": "Task 1 will partially fail. Tasks 2 and 3 will be skipped",
+        "B": "Task 1 will partially fail. Tasks 2 and 3 will run and succeed",
+        "C": "Task 1 will completely fail. Tasks 2 and 3 will be skipped",
+        "D": "Task 1 will completely fail. Tasks 2 and 3 will run and succeed",
+        "E": "All tasks will partially fail"
+      },
+      "correct_answer": "A",
+      "explanation": "If a task fails during a job run, all dependent tasks will be skipped. The failure of a task will always be partial — operations in the notebook before the code failure will be successfully run and committed, while operations after the failure will be skipped."
+    },
+    {
+      "id": 26,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand cluster permission levels and their associated abilities.",
+      "question_text": "A Databricks admin has created a Cluster and provided Can Restart permission to a group of users named `data_analysts`. Which of the following cluster-related actions cannot be performed by the members of the `data_analysts` group?",
+      "options": {
+        "A": "Terminate the cluster",
+        "B": "View Spark UI",
+        "C": "Restart the cluster",
+        "D": "View the cluster metrics",
+        "E": "Edit the cluster"
+      },
+      "correct_answer": "E",
+      "explanation": "The 'Can Restart' permission level allows: Attach notebook, View Spark UI, View cluster metrics, View driver logs, Terminate, Start, and Restart the cluster. Editing the cluster requires 'Can Manage' permissions."
+    },
+    {
+      "id": 27,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the file formats used by Delta Lake for data and transaction logs.",
+      "question_text": "In Delta Lake tables, which of the following is the file format for the transaction log?",
+      "options": {
+        "A": "Delta",
+        "B": "Parquet",
+        "C": "JSON",
+        "D": "Hive-specific format",
+        "E": "Both, Parquet and JSON"
+      },
+      "correct_answer": "C",
+      "explanation": "Delta Lake's transaction log (DeltaLog) stores metadata about changes in JSON files. These files record every transaction that modifies the table. The actual table data is stored in Parquet files, but JSON is used for the transaction log."
+    },
+    {
+      "id": 28,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Z-order indexing configuration with Auto Compaction in Delta Lake.",
+      "question_text": "A data engineer is using the following spark configurations in a pipeline to enable Optimized Writes and Auto Compaction:\n\n```python\nspark.conf.set(\"spark.databricks.delta.optimizeWrite.enabled\", True)\nspark.conf.set(\"spark.databricks.delta.autoCompact.enabled\", True)\n```\n\nThey also want to enable Z-order indexing with Auto Compaction to leverage data skipping on all the pipeline's tables.\n\nWhich of the following solutions allows the data engineer to complete this task?",
+      "options": {
+        "A": "Use `spark.conf.set(\"spark.databricks.delta.autoZorder.enabled\", True)`",
+        "B": "Use `spark.conf.set(\"spark.databricks.delta.autoCompact.zorder.enabled\", True)`",
+        "C": "Z-order indexing with Auto Compaction can only be enabled on each table separately using: `ALTER TABLE table_name SET TBLPROPERTIES (delta.autoOptimize.zorder.enabled = true)`",
+        "D": "There is no need for extra configurations. Z-Ordering is enabled by default with Auto Compaction",
+        "E": "There is no way to enable Z-order indexing with Auto Compaction since it does not support Z-Ordering"
+      },
+      "correct_answer": "C",
+      "explanation": "Optimized Writes and Auto Compaction can be enabled globally via spark.conf, but Z-order indexing cannot be enabled globally. It must be set at the table level using `ALTER TABLE <table_name> SET TBLPROPERTIES ('delta.autoOptimize.zorder.enabled' = 'true')`."
+    },
+    {
+      "id": 29,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Databricks secrets redaction behaviour and potential workarounds.",
+      "question_text": "A data engineer has heard recently that users who have access to Databricks Secrets could be able to display the values of secrets in notebooks.\n\nWhich of the following could be a workaround to print the value of a Databricks secret in plain text?",
+      "options": {
+        "A": "```python\ndb_password = dbutils.secrets.get(\"prod-scope\", \"db-password\")\ndisplay(db_password)\n```",
+        "B": "```python\ndb_password = dbutils.secrets.get(\"prod-scope\", \"db-password\", redacted=False)\nprint(db_password)\n```",
+        "C": "```python\ndb_password = dbutils.secrets.get(\"prod-scope\", \"db-password\")\nprint(db_password, redacted=False)\n```",
+        "D": "```python\ndb_password = dbutils.secrets.get(\"prod-scope\", \"db-password\")\nfor char in db_password:\n    print(char)\n```",
+        "E": "There is no workaround to print secrets values in plain text in notebooks. A string \"REDACTED\" will always be displayed when trying to print out a secret value."
+      },
+      "correct_answer": "D",
+      "explanation": "While Databricks automatically redacts secret values when printed directly, iterating through each character bypasses this protection. Each individual character is printed separately, reconstructing the full secret value. This is a known behaviour that security-conscious users should be aware of."
+    },
+    {
+      "id": 30,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the difference between managed and external tables when dropped.",
+      "question_text": "A team of data engineers started a project seven years ago. Two tables were created with the following SQL statements:\n\n```sql\nCREATE TABLE flights\n(flight_number STRING, source STRING, destination STRING)\nusing DELTA;\n\nCREATE TABLE airports\n(airport_id STRING, city STRING, country STRING)\nUSING PARQUET\nLOCATION 'dbfs:/airports/data/';\n```\n\nThe DBFS location `dbfs:/airports/data/` contains static data for the airports while the data in the flights table is updated on a daily basis. After the creation of the tables, the definition of the tables was not altered. A junior data engineer joins the team and runs the following SQL statements:\n\n```sql\nDROP TABLE flights;\nDROP TABLE airports;\n```\n\nWhich of the following statements is true about the data present in the tables? Assume that the UNDROP command, recently launched by Databricks, cannot be used.",
+      "options": {
+        "A": "The data in both tables can be retrieved by using the Time Travel feature of Delta tables.",
+        "B": "The tables cannot be dropped without deleting all the records.",
+        "C": "The data in the flights table can be recovered using Time Travel but the data in the airports table cannot be recovered.",
+        "D": "The data in airports table can be accessed at the DBFS location and the data in the flights table can be recovered using the Time Travel feature.",
+        "E": "The data in flights table cannot be recovered but the data in the airports table can be accessed at the DBFS location."
+      },
+      "correct_answer": "E",
+      "explanation": "The flights table (managed Delta) has its data removed on DROP TABLE and cannot be recovered without UNDROP. The airports table (external Parquet with LOCATION) only has its metadata removed — the underlying data files at 'dbfs:/airports/data/' remain accessible."
+    },
+    {
+      "id": 31,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand how table partitioning supports data deletion requirements.",
+      "question_text": "The data engineering team has a pipeline that ingests Kafka source data into a Multiplex bronze table. This Delta table is partitioned based on the `topic` and `month` columns.\n\nA new data engineer notices that the 'user_activity' topic contains Personal Identifiable Information (PII) that needs to be deleted every two months based on the company's Service-Level Agreement (SLA).\n\nWhich statement describes how table partitioning can help to meet this requirement?",
+      "options": {
+        "A": "Table partitioning allows immediate files deletion without running VACUUM command",
+        "B": "Table partitioning allows delete queries to leverage partition boundaries.",
+        "C": "Table partitioning reduces query latency when deleting large data files",
+        "D": "Table partitioning does not allow to time travel the PII data after deletion",
+        "E": "None of the above statements is correct. Table partitioning can not help to meet the specified requirement."
+      },
+      "correct_answer": "B",
+      "explanation": "When a Delta table is partitioned by topic and month, a DELETE statement filtering on partition columns (topic = 'user_activity' AND month < two_months_ago) allows Databricks to only scan and operate on the relevant partitions, significantly improving delete performance."
+    },
+    {
+      "id": 32,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand streaming deduplication limitations and the role of watermarking.",
+      "question_text": "A junior data engineer is using the following code to de-duplicate raw streaming data and insert them in a target Delta table:\n\n```python\nspark.readStream\n  .table(\"orders_raw\")\n  .dropDuplicates([\"order_id\", \"order_timestamp\"])\n  .writeStream\n  .option(\"checkpointLocation\", \"dbfs:/checkpoints\")\n  .table(\"orders_unique\")\n```\n\nA senior data engineer pointed out that this approach is not enough for having distinct records in the target table when there are late-arriving, duplicate records.\n\nWhich of the following could explain the senior data engineer's remark? (Select 2)",
+      "options": {
+        "A": "Watermarking is also needed to only track state information for a window of time in which we expect records could be delayed.",
+        "B": "A ranking function is also needed to ensure processing only the most recent records",
+        "C": "A window function is also needed to apply deduplication for each non-overlapping interval.",
+        "D": "The new records need also to be deduplicated against previously inserted data into the table.",
+        "E": "More information is needed to determine the correct response"
+      },
+      "correct_answer": ["A", "D"],
+      "explanation": "Watermarking tells Spark how long to keep state for deduplication in streaming and controls lateness tolerance. Streaming dropDuplicates only removes duplicates in the current streaming state — it does not compare new data against what's already stored in the target table. A merge/upsert or idempotent write is needed to ensure no duplicates overall."
+    },
+    {
+      "id": 33,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the difference between shallow clone and deep clone in Delta Lake.",
+      "question_text": "A junior data engineer has created the table 'orders_backup' as a copy of the table \"orders\". Recently, the team started getting an error when querying the `orders_backup` indicating that some data files are no longer present. The transaction logs for the orders tables show a recent run of VACUUM command.\n\nWhich of the following explains how the data engineer created the `orders_backup` table?",
+      "options": {
+        "A": "The orders_backup table was created using CTAS statement from orders table",
+        "B": "The orders_backup table was created using CRAS statement from orders table",
+        "C": "The orders_backup table was created using Delta Lake's SHALLOW CLONE functionality from the orders table",
+        "D": "The orders_backup table was created using Delta Lake's DEEP CLONE functionality from the orders table",
+        "E": "The orders_backup table was created by fully copying the orders table's directory"
+      },
+      "correct_answer": "C",
+      "explanation": "With Shallow Clone, a copy of a table is created by just copying the Delta transaction logs — no data is moved. Running VACUUM on the source table may purge data files referenced in the transaction log of the clone, resulting in errors when querying the clone."
+    },
+    {
+      "id": 34,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the Change Data Feed (CDF) feature in Delta Lake.",
+      "question_text": "\"A feature built into Delta Lake that allows to automatically generate CDC feeds about Delta Lake tables\"\n\nWhich of the following is being described in the above statement?",
+      "options": {
+        "A": "Auto Optimize",
+        "B": "Optimized writes",
+        "C": "Spark Watermarking",
+        "D": "Slowly Changing Dimension (SCD)",
+        "E": "Change Data Feed (CDF)"
+      },
+      "correct_answer": "E",
+      "explanation": "Change Data Feed (CDF) is a feature built into Delta Lake that automatically generates CDC feeds. CDF records row-level changes for all data written into a Delta table, including metadata indicating whether the row was inserted, deleted, or updated."
+    },
+    {
+      "id": 35,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the retention policy of Change Data Feed (CDF) data in Delta Lake.",
+      "question_text": "Which of the following statements regarding the retention policy of Delta Lake CDF is correct?",
+      "options": {
+        "A": "Running the VACUUM command on the table deletes CDF data as well",
+        "B": "Running the VACUUM command on the table does not deletes CDF data",
+        "C": "Running the VACUUM command on the table does not deletes CDF data unless CASCADE clause is set to true",
+        "D": "CDF data files can be purged by running VACUUM CHANGES command",
+        "E": "CDF data files can never be permanently purged from Delta Lake"
+      },
+      "correct_answer": "A",
+      "explanation": "Databricks records change data for UPDATE, DELETE, and MERGE operations in the `_change_data` folder under the table directory. The files in the `_change_data` folder follow the retention policy of the table. Therefore, running VACUUM also deletes CDF data."
+    },
+    {
+      "id": 36,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand default trigger interval behaviour in Structured Streaming.",
+      "question_text": "Given the following Structured Streaming query:\n\n```python\n(spark.readStream\n  .table(\"orders\")\n  .writeStream\n  .option(\"checkpointLocation\", checkpointPath)\n  .table(\"Output_Table\")\n)\n```\n\nWhich of the following is the trigger interval for this query?",
+      "options": {
+        "A": "Every half second",
+        "B": "Every half min",
+        "C": "Every half hour",
+        "D": "The query will run in batch mode to process all available data at once, then the trigger stops.",
+        "E": "More information is needed to determine the correct response"
+      },
+      "correct_answer": "A",
+      "explanation": "By default, if you don't provide any trigger interval, the data will be processed every half second. This is equivalent to `trigger(processingTime=\"500ms\")`."
+    },
+    {
+      "id": 37,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand CREATE TABLE AS SELECT (CTAS) behaviour in Databricks.",
+      "question_text": "A data engineer runs the following CTAS statement in a SQL notebook attached to an All-purpose cluster:\n\n```sql\nCREATE TABLE course_students\nAS (\n  SELECT c.course_name, t.student_id, t.student_name\n  FROM courses c\n  LEFT JOIN (\n    SELECT s.student_id, s.student_name, e.course_id\n    FROM students s\n    INNER JOIN enrollments e\n    ON s.student_id = e.student_id\n  ) t\n  ON c.course_id = t.course_id\n  WHERE c.active = true\n)\n```\n\nWhich statement describes the resulting `course_students` table?",
+      "options": {
+        "A": "It's a virtual table that has no physical data. The SELECT statement will be executed each time the course_students table is queried.",
+        "B": "It's a cluster-scoped virtual table. The SELECT statement will be executed only the first time the course_students table is queried. The query output will be stored in the memory of the currently active cluster.",
+        "C": "It's a Delta Lake table. The SELECT statement will be executed at the table creation, and its output will be stored in Delta format on the underlying storage.",
+        "D": "It's a cluster-scoped table. The SELECT statement will be executed at the table creation, but its output will be stored in the memory of the currently active cluster.",
+        "E": "It's a session-scoped table. The SELECT statement will be executed at the table creation, but its output will be stored in the cache of the current active Spark session."
+      },
+      "correct_answer": "C",
+      "explanation": "CREATE TABLE AS SELECT statements (CTAS) create new Delta tables and populate them using the output of a SELECT query. The query result is stored in Delta format in the directory of the newly created table."
+    },
+    {
+      "id": 38,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand stream-static join behaviour in Structured Streaming.",
+      "question_text": "A data engineer has a streaming job that updates a Delta table named 'user_activities' by the results of a join between a streaming Delta table 'activity_logs' and a static Delta table 'users'.\n\nThey noticed that adding new users into the 'users' table does not automatically trigger updates to the 'user_activities' table, even when there were activities for those users in the 'activity_logs' table.\n\nWhich of the following likely explains this issue?",
+      "options": {
+        "A": "The users table must be refreshed with REFRESH TABLE command for each microbatch of this join",
+        "B": "This stream-static join is not stateful by default unless they set the spark configuration delta.statefulStreamStaticJoin to true.",
+        "C": "The streaming portion of this stream-static join drives the join process. Only new data appearing on the streaming side of the join will trigger the processing.",
+        "D": "The static portion of the stream-static join drives this join process only in batch mode.",
+        "E": "In Delta Lake, static tables can not be joined with streaming tables."
+      },
+      "correct_answer": "C",
+      "explanation": "In a stream-static join, the streaming portion drives the join process. Only new data appearing on the streaming side will trigger processing. Adding new records to the static table will not automatically trigger updates to the results."
+    },
+    {
+      "id": 39,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand batch reading of Change Data Feed and default write modes.",
+      "question_text": "Given the following query on the Delta table 'customers' on which Change Data Feed is enabled:\n\n```python\nspark.read\n  .option(\"readChangeFeed\", \"true\")\n  .option(\"startingVersion\", 0)\n  .table(\"customers\")\n  .filter(col(\"_change_type\").isin([\"update_postimage\"]))\n  .write\n  .table(\"customers_updates\")\n```\n\nWhich statement describes the result of this query each time it is executed?",
+      "options": {
+        "A": "Newly updated records will be merged into the target table, modifying previous entries with the same primary keys.",
+        "B": "Newly updated records will be appended to the target table.",
+        "C": "Newly updated records will overwrite the target table.",
+        "D": "The entire history of updated records will be appended to the target table at each execution, which leads to duplicate entries.",
+        "E": "The entire history of updated records will overwrite the target table at each execution."
+      },
+      "correct_answer": "D",
+      "explanation": "Reading CDF changes using `spark.read` means reading them as a static source. Each execution reads all changes from startingVersion 0. The default writing mode is 'append', so the entire history of updated records will be appended at each execution, leading to duplicate entries."
+    },
+    {
+      "id": 40,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand schema evolution options with Auto Loader and writeStream.",
+      "question_text": "A data engineer wants to use Autoloader to ingest input data into a target table, and automatically evolve the schema of the table when new fields are detected.\n\nThey use the below query with a blank:\n\n```python\nspark.readStream\n  .format(\"cloudFiles\")\n  .option(\"cloudFiles.format\", \"json\")\n  .option(\"cloudFiles.schemaLocation\", checkpointPath)\n  .load(source_path)\n  .writeStream\n  .option(\"checkpointLocation\", checkpointPath)\n  .___________\n  .start(\"target_table\")\n```\n\nWhich option correctly fills in the blank to meet the specified requirement?",
+      "options": {
+        "A": "`option(\"cloudFiles.schemaEvolutionMode\", \"addNewColumns\")`",
+        "B": "`option(\"cloudFiles.mergeSchema\", True)`",
+        "C": "`option(\"mergeSchema\", True)`",
+        "D": "`schema(schema_definition, mergeSchema=True)`",
+        "E": "Autoloader can not automatically evolve the schema of the table when new fields are detected"
+      },
+      "correct_answer": "C",
+      "explanation": "Schema evolution is activated by adding `.option('mergeSchema', 'true')` to your `.write` or `.writeStream` Spark command. This allows new detected fields to be added to the table."
+    },
+    {
+      "id": 41,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the difference between batch and streaming reads using spark.table().",
+      "question_text": "Given the following query:\n\n```python\nspark.table(\"stream_sink\")\n  .filter(\"recent = true\")\n  .dropDuplicates([\"item_id\", \"item_timestamp\"])\n  .write\n  .mode(\"overwrite\")\n  .table(\"stream_data_stage\")\n```\n\nWhich statement describes the result of executing this query?",
+      "options": {
+        "A": "An incremental job will overwrite the stream_sink table by those deduplicated records from stream_data_stage that have been added since the last time the job was run.",
+        "B": "An incremental job will overwrite the stream_data_stage table by those deduplicated records from stream_sink that have been added since the last time the job was run.",
+        "C": "A batch job will overwrite the stream_sink table by deduplicated records calculated from all \"recent\" items in the stream_data_stage table",
+        "D": "A batch job will overwrite the stream_data_stage table by deduplicated records calculated from all \"recent\" items in the stream_sink table",
+        "E": "A batch job will overwrite the stream_data_stage table by those deduplicated records from stream_sink that have been added since the last time the job was run."
+      },
+      "correct_answer": "D",
+      "explanation": "Reading a Delta table using `spark.table()` reads it as a static source. Each execution reads all records in the current version of `stream_sink`, filters and deduplicates them, then writes in 'overwrite' mode to `stream_data_stage`, completely overwriting it."
+    },
+    {
+      "id": 42,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand CHECK constraint behaviour and ACID guarantees in Delta Lake.",
+      "question_text": "The data engineering team has a Delta table named 'users'. A recent CHECK constraint has been added to the table using the following command:\n\n```sql\nALTER TABLE users\nADD CONSTRAINT valid_age CHECK (age > 0);\n```\n\nThe team attempted to insert a batch of new records to the table, but there were some records with negative age values which caused the write to fail because of the constraint violation.\n\nWhich statement describes the outcome of this batch insert?",
+      "options": {
+        "A": "All records except those that violate the table constraint have been inserted in the table. Records violating the constraint have been ignored.",
+        "B": "All records except those that violate the table constraint have been inserted in the table. Records violating the constraint have been recorded into the transaction log.",
+        "C": "Only records processed before reaching the first violating record have been inserted in the table",
+        "D": "None of the records have been inserted into the table.",
+        "E": "The outcome depends on the action defined using the ON VIOLATION clause in the table properties."
+      },
+      "correct_answer": "D",
+      "explanation": "ACID guarantees on Delta Lake ensure that all transactions are atomic — they either succeed or fail completely. Since the write failed due to a constraint violation, none of the records have been inserted, even those that don't violate the constraint."
+    },
+    {
+      "id": 43,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Delta Lake file statistics collection behaviour.",
+      "question_text": "Which statement regarding Delta Lake File Statistics is NOT correct?",
+      "options": {
+        "A": "The statistics are leveraged for data skipping when executing selective queries.",
+        "B": "The statistics are generally uninformative for string fields with very high cardinality.",
+        "C": "Delta Lake captures statistics in the transaction log for each added data file",
+        "D": "By default, Delta Lake captures statistics on the first 32 columns of the table.",
+        "E": "Nested fields do not count when determining the first 32 columns in the table."
+      },
+      "correct_answer": "E",
+      "explanation": "Nested fields DO count when determining the first 32 columns. For example, 4 struct fields with 8 nested fields each will total to 32 columns."
+    },
+    {
+      "id": 44,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand which statistics Delta Lake captures per data file.",
+      "question_text": "Which of the following is NOT a valid Delta Lake File Statistics?",
+      "options": {
+        "A": "The total number of records in the added data file.",
+        "B": "The minimum value in each of the first 32 columns",
+        "C": "The maximum value in each of the first 32 columns",
+        "D": "The average value for each of the first 32 columns",
+        "E": "The number of null values for each of the first 32 columns"
+      },
+      "correct_answer": "D",
+      "explanation": "Delta Lake captures: total number of records, minimum value, maximum value, and null value counts for each column in the first 32 columns. The average value is NOT part of Delta Lake file statistics."
+    },
+    {
+      "id": 45,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Slowly Changing Dimension (SCD) type definitions.",
+      "question_text": "Which of the following definitions correctly describes a Slowly Changing Dimension of Type 0?",
+      "options": {
+        "A": "It's a table where no changes are allowed.",
+        "B": "It's a table where history will be kept in the additional column",
+        "C": "It's a table where the new arriving data overwrites the existing one.",
+        "D": "It's a table that stores and manages both current and historical data over time.",
+        "E": "It's a table that maintains current records, while older records are stored in another table."
+      },
+      "correct_answer": "A",
+      "explanation": "Type 0 SCD tables never change. Tables of this type are usually static, for example, static lookup tables."
+    },
+    {
+      "id": 46,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the purpose of the _change_data folder in Delta Lake tables.",
+      "question_text": "The data engineering team maintains a Delta Lake table of SCD Type 1. A junior data engineer noticed a folder named `_change_data` in the table directory, and wants to understand what this folder is used for.\n\nWhich of the following describes the purpose of this folder?",
+      "options": {
+        "A": "The '_change_data' folder is a metadata directory to track any update to the table definition",
+        "B": "The '_change_data' folder is the default directory to track the evolution in schema definition",
+        "C": "All SCD Type 1 tables have the '_change_data' folder to track the updates applied on the table's data.",
+        "D": "Optimized Writes feature is enabled on the table. The '_change_data' folder is the location where the optimized data is stored",
+        "E": "CDF feature is enabled on the table. The '_change_data' folder is the location where CDF data is stored"
+      },
+      "correct_answer": "E",
+      "explanation": "Databricks records change data for UPDATE, DELETE, and MERGE operations in the `_change_data` folder under the table directory. This folder is created when Change Data Feed (CDF) is enabled on the table."
+    },
+    {
+      "id": 47,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand windowed aggregation in Structured Streaming.",
+      "question_text": "A data engineer has the following streaming query with a blank:\n\n```python\nspark.readStream\n  .table(\"orders_cleaned\")\n  .groupBy(\n    ___________________________,\n    \"author\")\n  .agg(\n    count(\"order_id\").alias(\"orders_count\"),\n    avg(\"quantity\").alias(\"avg_quantity\"))\n  .writeStream\n  .option(\"checkpointLocation\", \"dbfs:/path/checkpoint\")\n  .table(\"orders_stats\")\n```\n\nThey want to calculate the orders count and average quantity for each non-overlapping 15-minute interval.\n\nWhich option correctly fills in the blank to meet this requirement?",
+      "options": {
+        "A": "`trigger(processingTime=\"15 minutes\")`",
+        "B": "`window(\"order_timestamp\", \"15 minutes\")`",
+        "C": "`withWindow(\"order_timestamp\", \"15 minutes\")`",
+        "D": "`withWatermark(\"order_timestamp\", \"15 minutes\")`",
+        "E": "`interval(\"order_timestamp\", \"15 minutes\")`"
+      },
+      "correct_answer": "B",
+      "explanation": "The `pyspark.sql.functions.window` function bucketises rows into one or more time windows given a timestamp column. `window(\"order_timestamp\", \"15 minutes\")` creates non-overlapping 15-minute intervals."
+    },
+    {
+      "id": 48,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand how to share filtered and renamed data from a Delta Lake table.",
+      "question_text": "The data engineering team is looking for a simple solution to share part of a large Delta Lake table with the data science team. Only department-specific columns in the table need to be shared, but with different names. In addition, there is some sensitive data that must be filtered out before sharing.\n\nWhich of the following objects can be created to meet the specified requirements?",
+      "options": {
+        "A": "A new Delta Table created using DEEP CLONE from the existing table",
+        "B": "A new Delta Table created using SHALLOW CLONE from the existing table",
+        "C": "A new Delta Table created using CTAS statement on the existing table",
+        "D": "A stored view on the existing table",
+        "E": "An ad-hoc query on the existing table"
+      },
+      "correct_answer": "D",
+      "explanation": "A view on the table allows renaming columns with aliases, filtering out sensitive data with a WHERE clause, and selecting only the required department-specific columns — all without duplicating data."
+    },
+    {
+      "id": 49,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Delta Lake OPTIMIZE command default file size.",
+      "question_text": "Which of the following is the default target file size when compacting small files of a Delta table by manually running OPTIMIZE command?",
+      "options": {
+        "A": "64 MB",
+        "B": "128 MB",
+        "C": "256 MB",
+        "D": "512 MB",
+        "E": "1024 MB"
+      },
+      "correct_answer": "E",
+      "explanation": "The OPTIMIZE command compacts small data files into larger ones. The default value is 1073741824 bytes, which sets the target size to 1 GB (1024 MB)."
+    },
+    {
+      "id": 50,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the behaviour of deep and shallow clones in Delta Lake.",
+      "question_text": "Which of the following statements regarding cloning tables on Databricks is correct?",
+      "options": {
+        "A": "Any changes made to either deep or shallow clones affect only the clones themselves and not the source table.",
+        "B": "Any changes made to deep clones affect only the clones themselves and not the source table. While, changes made to shallow clones affect the source table.",
+        "C": "Any changes made to shallow clones affect only the clones themselves and not the source table. While, changes made to deep clones affect the source table.",
+        "D": "Changes made to either deep or shallow clones affect the source table.",
+        "E": "Changes made to either deep or shallow clones affect the source table unless CASCADE option is False."
+      },
+      "correct_answer": "A",
+      "explanation": "In either case (deep or shallow cloning), data modifications applied to the cloned version of the table will be tracked and stored separately from the source, so changes will not affect the source table."
+    },
+    {
+      "id": 51,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand broadcast join optimisation in PySpark.",
+      "question_text": "A data engineer wants to optimize the following join operation by allowing the smaller DataFrame to be sent to all executor nodes in the cluster:\n\n```python\nlargeDF.join(smallerDF, [\"key\"], \"inner\")\n```\n\nWhich of the following functions can be used to mark a DataFrame as small enough to fit in memory on all executors?",
+      "options": {
+        "A": "`pyspark.sql.functions.distribute`",
+        "B": "`pyspark.sql.functions.explode`",
+        "C": "`pyspark.sql.functions.broadcast`",
+        "D": "`pyspark.sql.functions.diffuse`",
+        "E": "`pyspark.sql.functions.shuffle`"
+      },
+      "correct_answer": "C",
+      "explanation": "`pyspark.sql.functions.broadcast` marks a DataFrame as small enough for use in broadcast joins, sending it to all executor nodes to avoid expensive shuffle operations."
+    },
+    {
+      "id": 52,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand partitioning strategy for security and access control in multiplex tables.",
+      "question_text": "The data engineering team wants to create a multiplex bronze Delta table from a Kafka source. The Delta Table has the following schema:\n\n```\nkey BINARY, value BINARY, topic STRING, partition LONG, offset LONG, timestamp LONG\n```\n\nSince the \"value\" column contains Personal Identifiable Information (PII) for some topics, the team wants to apply Access Control Lists (ACLs) at partition boundaries to restrict access to this PII data.\n\nBased on the above schema and the specified requirement, which column is a good candidate for partitioning?",
+      "options": {
+        "A": "key",
+        "B": "value",
+        "C": "topic",
+        "D": "partition",
+        "E": "timestamp"
+      },
+      "correct_answer": "C",
+      "explanation": "Table partitioning helps improve security. Since PII is present only in certain topics, partitioning by `topic` allows separating sensitive and non-sensitive data into different partitions and applying different security controls to the sensitive data."
+    },
+    {
+      "id": 53,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Identify indicators of over-partitioned Delta Lake tables.",
+      "question_text": "The data engineering team wants to know if the tables that they maintain in the Lakehouse are over-partitioned.\n\nWhich of the following is an indicator that a Delta Lake table is over-partitioned?",
+      "options": {
+        "A": "If the number of partitions in the table are too low",
+        "B": "If most partitions in the table have less than 1 GB of data",
+        "C": "If most partitions in the table have more than 1 GB of data",
+        "D": "If the partitioning columns are fields of low cardinality",
+        "E": "If the data in the table continues to arrive indefinitely."
+      },
+      "correct_answer": "B",
+      "explanation": "Data that is over-partitioned leads to many small files that cannot be combined across partition boundaries, increasing storage costs and scan times. If most partitions in a table have less than 1 GB of data, the table is likely over-partitioned."
+    },
+    {
+      "id": 54,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand batch join and overwrite behaviour with spark.table().",
+      "question_text": "The data engineering team maintains the following join logic between three Delta tables:\n\n```python\ndf_students = spark.table(\"students\")\ndf_courses = spark.table(\"courses\")\ndf_enrollments = spark.table(\"enrollments\")\n\ndf_join_1 = (df_students.join(df_enrollments,\n    df_students.student_id == df_enrollments.student_id)\n  .select(df_students.student_id,\n    df_students.student_name,\n    df_enrollments.course_id)\n)\n\ndf_join_2 = (df_join_1.join(df_courses,\n    df_join_1.course_id == df_courses.course_id)\n  .select(df_join_1.student_id,\n    df_join_1.student_name,\n    df_courses.course_name)\n)\n\n(df_join_2.write\n  .mode(\"overwrite\")\n  .table(\"students_courses_details\"))\n```\n\nWhich statement describes the result of this code block each time it is executed?",
+      "options": {
+        "A": "All records in the current version of the source tables will be considered in the join operations. The matched records will overwrite the students_courses_details table.",
+        "B": "All records in the current version of the source tables will be considered in the join operations. The unmatched records will overwrite the students_courses_details table.",
+        "C": "Only newly added records to any of the source tables will be considered in the join operations. The matched records will overwrite the students_courses_details table.",
+        "D": "Only newly added records to any of the source tables will be considered in the join operations. The unmatched records will overwrite the students_courses_details table.",
+        "E": "These join operations are stateful, meaning that they will wait for unmatched records to be added to the source tables prior to calculating the results."
+      },
+      "correct_answer": "A",
+      "explanation": "Reading Delta tables using `spark.table()` reads them as static sources — all records in the current version are read and considered. The default join type is inner join, so matched records are written. The 'overwrite' mode completely replaces the target table."
+    },
+    {
+      "id": 55,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand ignoreDeletes option for streaming from Delta tables with partition deletes.",
+      "question_text": "The data engineering team has a large Delta Lake table named 'user_posts' which is partitioned over the 'year' column. The table is used as an input streaming source in a streaming job. The streaming query is displayed below with a blank:\n\n```python\nspark.readStream\n  .table(\"user_posts\")\n  ________________\n  .groupBy(\n    \"post_category\", \"post_date\")\n  .agg(\n    count(\"post_id\").alias(\"posts_count\"),\n    sum(\"likes\").alias(\"total_likes\"))\n  .writeStream\n  .option(\"checkpointLocation\", \"dbfs:/path/checkpoint\")\n  .table(\"posts_stats\")\n```\n\nThey want to remove previous 2 years data from the table without breaking the append-only requirement of streaming sources.\n\nWhich option correctly fills in the blank to enable stream processing from the table after deleting the partitions?",
+      "options": {
+        "A": "`.withWatermark(\"year\", \"INTERVAL 2 YEARS\")`",
+        "B": "`.window(\"year\", \"INTERVAL 2 YEARS\")`",
+        "C": "`.option(\"year\", \"ignoreDeletes\")`",
+        "D": "`.option(\"ignoreDeletes\", \"year\")`",
+        "E": "`.option(\"ignoreDeletes\", True)`"
+      },
+      "correct_answer": "E",
+      "explanation": "Deleting data breaks the append-only requirement of streaming sources. The `ignoreDeletes` option enables stream processing from Delta tables with partition deletes, allowing file deletion along partition boundaries without breaking the stream."
+    },
+    {
+      "id": 56,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand commands for viewing table metadata and comments.",
+      "question_text": "A data engineer created a new table along with a comment using the following query:\n\n```sql\nCREATE TABLE payments COMMENT \"This table contains sensitive information\" AS\nSELECT * FROM bank_transactions\n```\n\nWhich of the following commands allows the data engineer to review the comment of the table?",
+      "options": {
+        "A": "`SHOW TABLES payments`",
+        "B": "`SHOW TBLPROPERTIES payments`",
+        "C": "`SHOW COMMENTS payments`",
+        "D": "`DESCRIBE TABLE payments`",
+        "E": "`DESCRIBE EXTENDED payments`"
+      },
+      "correct_answer": "E",
+      "explanation": "`DESCRIBE TABLE EXTENDED` (or `DESCRIBE EXTENDED`) shows not only table column details but also the table's comment, custom table properties, and other metadata."
+    },
+    {
+      "id": 57,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand insert-only merge syntax in Delta Lake.",
+      "question_text": "Which of the following commands allows data engineers to perform an insert-only merge?",
+      "options": {
+        "A": "```sql\nMERGE INTO orders\nUSING new_orders\nON orders.orders_id = new_orders.orders_id\nWHEN MATCHED\nINSERT *\n```",
+        "B": "```sql\nMERGE INTO orders\nUSING new_orders\nON orders.orders_id = new_orders.orders_id\nWHEN NOT MATCHED\nINSERT *\n```",
+        "C": "```sql\nMERGE INTO orders\nUSING new_orders\nON orders.orders_id = new_orders.orders_id\nWHEN MATCHED\nINSERT\nWHEN NOT MATCHED\nIGNORE\n```",
+        "D": "```sql\nMERGE INTO orders\nUSING new_orders\nON orders.orders_id = new_orders.orders_id\nWHEN NOT MATCHED\nINSERT\nWHEN MATCHED\nIGNORE\n```",
+        "E": "```sql\nMERGE INTO orders\nUSING new_orders\nON orders.orders_id = new_orders.orders_id\nWHEN NOT MATCHED\nINSERT\nELSE IGNORE\n```"
+      },
+      "correct_answer": "B",
+      "explanation": "For an insert-only merge, you only specify the `WHEN NOT MATCHED` clause, which inserts a row when a source row does not match any target row based on the merge condition. Records with matching keys in the existing table are simply ignored."
+    },
+    {
+      "id": 58,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand MERGE INTO command limitations in Delta Lake.",
+      "question_text": "Which of the following is considered a limitation when using the MERGE INTO command?",
+      "options": {
+        "A": "Merge can not be performed in streaming jobs unless it uses Watermarking",
+        "B": "Merge can not be performed if multiple source rows matched and attempted to modify the same target row in the table",
+        "C": "Merge can not be performed if single source row matched and attempted to modify the multiple target rows in the table",
+        "D": "Merge does not support records deletion. It supports only upsert operations.",
+        "E": "All the above are considered limitations of the MERGE INTO command"
+      },
+      "correct_answer": "B",
+      "explanation": "Merge operation cannot be performed if multiple source rows match and attempt to modify the same target row. The result would be ambiguous as it's unclear which source row should be used to update or delete the matching target row. The source table should be preprocessed to eliminate multiple matches."
+    },
+    {
+      "id": 59,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand how to access the Spark session within a foreachBatch function.",
+      "question_text": "A data engineer is using a foreachBatch logic to upsert data in a target Delta table.\n\nThe function to be called at each new microbatch processing is displayed below with a blank:\n\n```python\ndef upsert_data(microBatchDF, batch_id):\n    microBatchDF.createOrReplaceTempView(\"sales_microbatch\")\n    sql_query = \"\"\"\n    MERGE INTO sales_silver a\n    USING sales_microbatch b\n    ON a.item_id=b.item_id AND a.item_timestamp=b.item_timestamp\n    WHEN NOT MATCHED THEN INSERT *\n    \"\"\"\n    ________________\n```\n\nWhich option correctly fills in the blank to execute the SQL query in the function on a cluster with recent Databricks Runtime above 10.5?",
+      "options": {
+        "A": "`spark.sql(sql_query)`",
+        "B": "`batch_id.sql(sql_query)`",
+        "C": "`microBatchDF.sql(sql_query)`",
+        "D": "`microBatchDF.sparkSession.sql(sql_query)`",
+        "E": "`microBatchDF._jdf.sparkSession().sql(sql_query)`"
+      },
+      "correct_answer": "D",
+      "explanation": "Within a foreachBatch function, the global spark session cannot be accessed directly. Instead, access the local spark session from the microbatch DataFrame. For Databricks Runtime above 10.5, the syntax is `microBatchDF.sparkSession.sql(sql_query)`."
+    },
+    {
+      "id": 60,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the MODIFY privilege in Databricks SQL.",
+      "question_text": "A data engineer uses the following SQL query:\n\n```sql\nGRANT MODIFY ON TABLE employees TO hr_team\n```\n\nWhich of the following describes the ability given by the MODIFY privilege?",
+      "options": {
+        "A": "It gives the ability to add data from the table",
+        "B": "It gives the ability to delete data from the table",
+        "C": "It gives the ability to modify data in the table",
+        "D": "All the above abilities are given by the MODIFY privilege",
+        "E": "None of these options correctly describe the ability given by the MODIFY privilege"
+      },
+      "correct_answer": "D",
+      "explanation": "The MODIFY privilege gives the ability to add, delete, and modify data to or from an object."
+    },
+    {
+      "id": 61,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Delta Lake file statistics limitations with high-cardinality string fields.",
+      "question_text": "The data engineering team has a large Delta table named 'user_messages' with the following schema:\n\n```\nmsg_id INT, user_id INT, msg_time TIMESTAMP, msg_title STRING, msg_body STRING\n```\n\nThe `msg_body` field represents user messages in free-form text. The table has a performance issue when it's queried with filters on this field.\n\nWhich of the following could explain the reason for this performance issue?",
+      "options": {
+        "A": "The table does not leverage file skipping because it's not partitioned on the msg_body column.",
+        "B": "The table does not leverage file skipping because it's not optimized with Z-ORDER on the msg_body column.",
+        "C": "The table does not leverage file skipping because Delta Lake statistics are uninformative for string fields with very high cardinality",
+        "D": "The table does not leverage file skipping because Delta Lake statistics are only captured on the first 3 columns in a table.",
+        "E": "The table does not leverage file skipping because Delta Lake statistics are not captured on columns of type STRING"
+      },
+      "correct_answer": "C",
+      "explanation": "Delta Lake statistics are generally uninformative for string fields with very high cardinality (such as free text fields). Calculating statistics on free-form text fields is also time consuming. Such fields should be placed after the first 32 columns to omit them from statistics collection."
+    },
+    {
+      "id": 62,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand default database and table storage locations in Databricks.",
+      "question_text": "Given the following commands:\n\n```sql\nCREATE DATABASE db_hr;\nUSE db_hr;\nCREATE TABLE employees;\n```\n\nIn which of the following locations will the employees table be located?",
+      "options": {
+        "A": "`dbfs:/user/hive/warehouse`",
+        "B": "`dbfs:/user/hive/warehouse/db_hr.db`",
+        "C": "`dbfs:/user/hive/warehouse/db_hr`",
+        "D": "`dbfs:/user/hive/databases/db_hr.db`",
+        "E": "More information is needed to determine the correct answer"
+      },
+      "correct_answer": "B",
+      "explanation": "Since the database is created without specifying a location, it will be created in the default warehouse directory under `dbfs:/user/hive/warehouse`. The database folder uses the `.db` extension. The table, also created without a location, becomes a managed table created under the database directory (`db_hr.db` folder)."
+    },
+    {
+      "id": 63,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand dynamic views with is_member() for row-level security.",
+      "question_text": "The data engineering team has a dynamic view with the following definition:\n\n```sql\nCREATE VIEW students_vw AS\nSELECT * FROM students\nWHERE\n  CASE\n    WHEN is_member(\"instructors\") THEN TRUE\n    ELSE is_active IS FALSE\n  END\n```\n\nWhich statement describes the results returned by querying this view?",
+      "options": {
+        "A": "Members of the instructors group will only see the records of active students. While users that are not members of the specified group will only see the records of inactive students.",
+        "B": "Members of the instructors group will only see the records of active students. While users that are not members of the specified group will see null values for the records of inactive students",
+        "C": "Only members of the instructors group will see the records of all students no matter if they are active or not. While users that are not members of the specified group will only see the records of inactive students",
+        "D": "Only members of the instructors group will see the records of all students no matter if they are active or not. While users that are not members of the specified group will see null values for the records of inactive students",
+        "E": "Only members of the instructors group will see the records of all students no matter if they are active or not. While users that are not members of the specified group will see \"REDACTED\" values for the records of inactive students"
+      },
+      "correct_answer": "C",
+      "explanation": "For members of the instructors group, the WHERE condition evaluates to TRUE for every record, granting full access to all students. For non-members, the ELSE branch applies, returning only records where `is_active IS FALSE` (inactive students)."
+    }
+  ]
+}

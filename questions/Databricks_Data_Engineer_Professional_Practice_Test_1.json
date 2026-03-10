@@ -1,0 +1,1021 @@
+{
+  "exam": "Databricks Certified Data Engineer Professional",
+  "version": "Practice Test 1",
+  "exam_details": {
+    "num_items": 63,
+    "time_limit_minutes": null,
+    "passing_note": "Multiple-choice, single answer per question"
+  },
+  "sections": [],
+  "questions": [
+    {
+      "id": 1,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand how to pass parameters from Databricks Jobs to notebooks.",
+      "question_text": "A data engineer wants to pass multiple parameters from a Databricks Job to a notebook. They already configured the key and value of each parameter in the configurations of the job.\n\nWhich of the following utilities can the data engineer use to read the passed parameters inside the notebook?",
+      "options": {
+        "A": "`dbutils.secrets`",
+        "B": "`dbutils.library`",
+        "C": "`dbutils.fs`",
+        "D": "`dbutils.notebook`",
+        "E": "`dbutils.widgets`"
+      },
+      "correct_answer": "E",
+      "explanation": "`dbutils.widgets` allow you to add parameters to your notebooks. The defined parameters can be passed from Databricks Jobs by adding them to the Parameters section in the task configuration."
+    },
+    {
+      "id": 2,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the benefit of Delta Lake File Statistics.",
+      "question_text": "Which of the following is the benefit of Delta Lake File Statistics?",
+      "options": {
+        "A": "They are leveraged for process time forecasting when executing selective queries.",
+        "B": "They are leveraged for data skipping when executing selective queries.",
+        "C": "They are leveraged for data compression in order to improve Delta Caching.",
+        "D": "They are used as checksums to check data corruption in parquet files.",
+        "E": "None of the above statements correctly describe the benefit of Delta Lake File Statistics."
+      },
+      "correct_answer": "B",
+      "explanation": "Delta Lake File Statistics capture per-file metrics (record count, min/max values, null counts for the first 32 columns). These statistics are leveraged for data skipping based on query filters, avoiding full file scans."
+    },
+    {
+      "id": 3,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Databricks Job ownership and permission transfer rules.",
+      "question_text": "The data engineering team created a new Databricks job for processing sensitive financial data. A financial analyst asked the team to transfer the \"Owner\" privilege of this job to the \"finance\" group.\n\nA junior data engineer that has the \"CAN MANAGE\" permission on the job is attempting to make this privilege transfer via Databricks Job UI, but it keeps failing.\n\nWhich of the following explains the cause of this failure?",
+      "options": {
+        "A": "The \"Owner\" privilege is assigned at job creation to the creator and cannot be changed.",
+        "B": "The job must be re-created using the \"finance\" group's credentials.",
+        "C": "Databricks Jobs UI doesn't support changing the owners of jobs. Databricks REST API needs to be used instead.",
+        "D": "Having the \"CAN MANAGE\" permission is not enough to grant \"Owner\" privileges to a group. The data engineer must be the current owner of the job.",
+        "E": "Having the \"CAN MANAGE\" permission is not enough to grant \"Owner\" privileges to a group. The data engineer must be a workspace administrator.",
+        "F": "Groups can not be owners of Databricks jobs. The owner must be an individual user."
+      },
+      "correct_answer": "F",
+      "explanation": "A job cannot have a group as an owner. Attempting to set a group as the owner of a job results in an error."
+    },
+    {
+      "id": 4,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the impact of over-partitioning on Delta Lake table performance.",
+      "question_text": "The data engineering team noticed that a partitioned Delta Lake table is suffering greatly. They are experiencing slowdowns for most general queries on this table.\n\nThe team tried to run an OPTIMIZE command on the table, but this did not help to resolve the issue.\n\nWhich of the following likely explains the cause of these slowdowns?",
+      "options": {
+        "A": "The table has too many old data files that need to be purged. They need to run a `VACUUM` command instead.",
+        "B": "The table is over-partitioned or incorrectly partitioned. This requires a full rewrite of all data files to resolve the issue.",
+        "C": "They are applying the `OPTIMIZE` command on the whole table. It must be applied at each partition separately.",
+        "D": "They are applying the `OPTIMIZE` command without `ZORDER`. Z-ordering is needed on the partitioning columns.",
+        "E": "The transaction log is too large. Log files older than a certain age must be deleted or archived at partition boundaries."
+      },
+      "correct_answer": "B",
+      "explanation": "Over-partitioned or incorrectly partitioned data leads to many small files that cannot be combined across partition boundaries. `OPTIMIZE` cannot fix this because it operates within partitions. A full rewrite of all data files is required."
+    },
+    {
+      "id": 5,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand DELETE behaviour in Delta Lake and the role of VACUUM for GDPR compliance.",
+      "question_text": "The data engineering team has the following query for processing customers' requests to be forgotten:\n\n```sql\nDELETE FROM customers\nWHERE customer_id IN\n(SELECT customer_id FROM delete_requests)\n```\n\nWhich statement describes the results of executing this query?",
+      "options": {
+        "A": "The identified records will be deleted from the customers table, and their associated data files will be permanently purged from the table directory.",
+        "B": "The identified records will be deleted from both customers and delete_requests tables, and their associated data files will be permanently purged from the tables directories.",
+        "C": "The identified records will be deleted from the customers table, but they will still be accessible in the table history until a `VACUUM` command is run.",
+        "D": "The identified records will be deleted from both customers and delete_requests tables, but they will still be accessible in the table history until `VACUUM` commands are run.",
+        "E": "The identified records will be deleted from the customers table, but they will still be accessible in the table history until updating the status of the requests in the delete_requests table."
+      },
+      "correct_answer": "C",
+      "explanation": "Delta Lake `DELETE` does not remove the underlying data files. It creates new files without the deleted records. The old files (and therefore the deleted data) remain accessible via time travel until a `VACUUM` command purges them."
+    },
+    {
+      "id": 6,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Databricks secret scope permission levels.",
+      "question_text": "The data engineering team has a secret scope named 'DataOps-Prod' that contains all secrets needed by DataOps engineers in a production workspace.\n\nWhich of the following is the minimum permission required for the DataOps engineers to use the secrets in this scope?",
+      "options": {
+        "A": "`MANAGE` permission on the `DataOps-Prod` scope",
+        "B": "`READ` permission on the `DataOps-Prod` scope",
+        "C": "`MANAGE` permission on each secret in the `DataOps-Prod` scope",
+        "D": "`READ` permission on each secret in the `DataOps-Prod` scope",
+        "E": "Workspace Administrator role"
+      },
+      "correct_answer": "B",
+      "explanation": "`READ` permission on the scope is the minimum required. It allows reading secrets and listing what secrets are available. Permissions are set at the scope level, not on individual secrets."
+    },
+    {
+      "id": 7,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know what metrics are available in the Ganglia UI.",
+      "question_text": "Which of the following is Not part of the Ganglia UI?",
+      "options": {
+        "A": "Memory usage",
+        "B": "Overall workload of the cluster",
+        "C": "CPU usage",
+        "D": "Lifecycle events of the cluster",
+        "E": "Network performance"
+      },
+      "correct_answer": "D",
+      "explanation": "Lifecycle events of the cluster are not part of the Ganglia UI. Ganglia monitors performance metrics such as memory, CPU, and network usage. Lifecycle events are found in the Cluster Event log."
+    },
+    {
+      "id": 8,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know the metrics available in the Spark UI stage details page.",
+      "question_text": "In Spark UI, which of the following is Not part of the metrics displayed in a stage's details page?",
+      "options": {
+        "A": "Duration",
+        "B": "Spill (Memory)",
+        "C": "Spill (Disk)",
+        "D": "DBU Cost",
+        "E": "GC time"
+      },
+      "correct_answer": "D",
+      "explanation": "DBU Cost is not part of Spark UI. DBU (Databricks Unit) is a pricing metric based on cluster configuration, not a Spark execution metric. The stage details page shows Duration, GC time, Shuffle spill (memory and disk), among others."
+    },
+    {
+      "id": 9,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the response structure of the Databricks Jobs REST API for multi-task job runs.",
+      "question_text": "A data engineer is using Databricks REST API to send a GET request to the endpoint 'api/2.1/jobs/runs/get' to retrieve the run's metadata of a multi-task job using its run_id.\n\nWhich statement correctly describes the response structure of this API call?",
+      "options": {
+        "A": "Each task of this job run will have a unique `task_id`",
+        "B": "Each task of this job run will have a unique `run_id`",
+        "C": "Each task of this job run will have a unique `job_id`",
+        "D": "Each task of this job run will have a unique `orchestration_id`",
+        "E": "Tasks do not have any unique identifier within a job run"
+      },
+      "correct_answer": "B",
+      "explanation": "Each task of a multi-task job run is assigned a unique `run_id`. This can be used to retrieve the task's output via the `api/2.1/jobs/runs/get-output` endpoint."
+    },
+    {
+      "id": 10,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand what DBFS is.",
+      "question_text": "Which of the following statements best describes DBFS?",
+      "options": {
+        "A": "Database File System that organizes and maintains data files in Databricks workspace",
+        "B": "Database File System to interact with files in cloud-based object storage",
+        "C": "Abstraction on top of Databricks Lakehouse that provides an open solution to share data to any computing platform",
+        "D": "Abstraction on top of scalable object storage that maps Unix-like file system calls to native cloud storage API calls.",
+        "E": "None of the above correctly describes DBFS"
+      },
+      "correct_answer": "D",
+      "explanation": "DBFS (Databricks File System) is a distributed file system mounted into a Databricks workspace. It is an abstraction on top of scalable object storage that maps Unix-like filesystem calls to native cloud storage API calls."
+    },
+    {
+      "id": 11,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know how to install notebook-scoped Python libraries.",
+      "question_text": "A data engineer wants to install a Python wheel scoped to the current notebook's session, so only the current notebook and any jobs associated with this notebook have access to that library.\n\nWhich of the following commands can the data engineer use to complete this task?",
+      "options": {
+        "A": "`%fs install my_package.whl`",
+        "B": "`%pip install my_package.whl`",
+        "C": "`%python install my_package.whl`",
+        "D": "`%whl install my_package`",
+        "E": "Python wheels can not be installed at the notebook level. They can only be installed at the cluster level."
+      },
+      "correct_answer": "B",
+      "explanation": "`%pip install` allows you to install a Python wheel scoped to the current notebook's session. The library will only be accessible in the current notebook and any jobs associated with it."
+    },
+    {
+      "id": 12,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the purpose of the sys.path Python variable.",
+      "question_text": "Which of the following statements correctly describes the sys.path Python variable?",
+      "options": {
+        "A": "The `sys.path` variable contains a list of all the parameters passed to a Python notebook.",
+        "B": "The `sys.path` variable contains a list of all the necessary dependencies for a Python notebook.",
+        "C": "The `sys.path` variable contains a list of directories where the Python interpreter searches for modules.",
+        "D": "The `sys.path` variable contains the full pathname of the current working directory of a Python notebook.",
+        "E": "The `sys.path` variable is an alias for `os.path`."
+      },
+      "correct_answer": "C",
+      "explanation": "`sys.path` contains a list of directories where the Python interpreter searches for modules. To import modules from another directory, you must add it to `sys.path`."
+    },
+    {
+      "id": 13,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand assertions in unit testing.",
+      "question_text": "Which of the following statements correctly describes assertions in unit testing?",
+      "options": {
+        "A": "An assertion is a boolean expression that checks if two code blocks are integrated logically and interacted as a group.",
+        "B": "An assertion is a boolean expression that checks if assumptions made in the code remain true while development.",
+        "C": "An assertion is a command that logs failed units of code in production for later debugging and analysis.",
+        "D": "An assertion is a command that shows the differences between the current version of a code unit and the most recently edited version.",
+        "E": "An assertion is a set of actions that simulates a user experience to ensure that the application can run properly under real-world scenarios."
+      },
+      "correct_answer": "B",
+      "explanation": "Assertions are boolean expressions used in unit tests to check if certain assumptions remain true during development. For example: `assert func() == expected_value`."
+    },
+    {
+      "id": 14,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand end-to-end testing.",
+      "question_text": "Which of the following statements correctly describes End-to-End Testing?",
+      "options": {
+        "A": "It's an approach to simulate a user experience to ensure that the application can run properly under real-world scenarios.",
+        "B": "It's an approach to test the interaction between subsystems of an application to ensure that modules work properly as a group.",
+        "C": "It's an approach to test individual units of code to determine whether they still work as expected if new changes are made to them in the future.",
+        "D": "It's an approach to verify if each feature of the application works as per the business requirements.",
+        "E": "It's an approach to measure the reliability, speed, scalability, and responsiveness of an application."
+      },
+      "correct_answer": "A",
+      "explanation": "End-to-end testing simulates a real user experience from start to finish, ensuring the application can run properly under real-world scenarios."
+    },
+    {
+      "id": 15,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know the unique identifier returned when triggering a job run via REST API.",
+      "question_text": "When running an existing job via Databricks REST API, which of the following represents the globally unique identifier of the newly triggered run?",
+      "options": {
+        "A": "`job_id`",
+        "B": "`run_id`",
+        "C": "`run_key`",
+        "D": "`task_id`",
+        "E": "`task_key`"
+      },
+      "correct_answer": "B",
+      "explanation": "Running an existing job via the `/api/2.1/jobs/run-now` endpoint returns the `run_id` of the triggered run. This is the globally unique identifier of the newly triggered run."
+    },
+    {
+      "id": 16,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know the recommended retry policy for production Structured Streaming jobs.",
+      "question_text": "For production Structured Streaming jobs, which of the following retry policies is recommended to use?",
+      "options": {
+        "A": "Unlimited Retries, with 1 Maximum Concurrent Run",
+        "B": "Unlimited Retries, with Unlimited Concurrent Runs",
+        "C": "No Retries, with 1 Maximum Concurrent Run",
+        "D": "No Retries, with Unlimited Concurrent Runs",
+        "E": "1 Retry, with 1 Maximum Concurrent Run"
+      },
+      "correct_answer": "A",
+      "explanation": "For production Structured Streaming jobs, Databricks recommends unlimited retries with a maximum of 1 concurrent run. Only one instance of each query should be active at a time to ensure correct processing guarantees."
+    },
+    {
+      "id": 17,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand CHECK constraint behaviour when existing data violates the constraint.",
+      "question_text": "The data engineering team has a large Delta table named `users`. A recent query on the table returned some entries with negative values in the `age` column.\n\nTo avoid this issue and enforce data quality, a junior data engineer decided to add a `CHECK` constraint to the table with the following command:\n\n```sql\nALTER TABLE users ADD CONSTRAINT valid_age CHECK (age > 0);\n```\n\nHowever, the command fails when executed.\n\nWhich statement explains the cause of this failure?",
+      "options": {
+        "A": "The syntax for adding the `CHECK` constraint is incorrect. Instead, the command should be: `ALTER TABLE users ADD CONSTRAINT ON COLUMN age (CHECK > 0)`",
+        "B": "The `users` table already exists; `CHECK` constraints can only be added during table creation using `CREATE TABLE` command.",
+        "C": "The `users` table already contains rows that violate the new constraint; all existing rows must satisfy the constraint before adding it to the table.",
+        "D": "The `users` table is not partitioned on the `age` column. `CHECK` constraints can only be added on partitioning columns.",
+        "E": "The `users` table already contains rows; `CHECK` constraints can only be added on empty tables."
+      },
+      "correct_answer": "C",
+      "explanation": "`ADD CONSTRAINT` verifies that all existing rows satisfy the constraint before adding it. Since the table contains rows with negative `age` values, the command fails."
+    },
+    {
+      "id": 18,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand cluster permission levels for viewing metrics, logs, and Spark UI.",
+      "question_text": "Which of the following describes the minimal permissions a data engineer needs to view the metrics, driver logs, and Spark UI of an existing cluster?",
+      "options": {
+        "A": "\"Can Attach To\" privilege on the cluster",
+        "B": "\"Can Restart\" privilege on the cluster",
+        "C": "\"Can Manage\" privilege on the cluster",
+        "D": "Cluster creation allowed + \"Can Attach To\" privileges on the cluster",
+        "E": "Cluster creation allowed + \"Can Restart\" privileges on the cluster"
+      },
+      "correct_answer": "A",
+      "explanation": "\"Can Attach To\" is the minimum permission level that grants access to view Spark UI, cluster metrics, and driver logs (with some conditions on driver logs)."
+    },
+    {
+      "id": 19,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand cluster permission levels for starting and terminating clusters.",
+      "question_text": "Which of the following describes the minimal permissions a data engineer needs to start and terminate an existing cluster?",
+      "options": {
+        "A": "\"Can Attach To\" privilege on the cluster",
+        "B": "\"Can Restart\" privilege on the cluster",
+        "C": "\"Can Manage\" privilege on the cluster",
+        "D": "Cluster creation allowed + \"Can Attach To\" privileges on the cluster",
+        "E": "Cluster creation allowed + \"Can Restart\" privileges on the cluster"
+      },
+      "correct_answer": "B",
+      "explanation": "\"Can Restart\" is the minimum permission level that grants the ability to start, terminate, and restart an existing cluster."
+    },
+    {
+      "id": 20,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand cluster permission levels for editing cluster configurations.",
+      "question_text": "Which of the following describes the minimal permissions a data engineer needs to edit the configurations of an existing cluster?",
+      "options": {
+        "A": "\"Can Restart\" privilege on the cluster",
+        "B": "\"Can Manage\" privilege on the cluster",
+        "C": "Cluster creation allowed + \"Can Restart\" privileges on the cluster",
+        "D": "Cluster creation allowed + \"Can Manage\" privileges on the cluster",
+        "E": "Only administrators can edit the configurations on existing clusters"
+      },
+      "correct_answer": "B",
+      "explanation": "\"Can Manage\" is the minimum permission level that grants the ability to edit cluster configurations, attach libraries, resize, and modify permissions."
+    },
+    {
+      "id": 21,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand when Change Data Feed (CDF) is appropriate to use.",
+      "question_text": "The data engineering team maintains a Type 1 table that is overwritten each night with new data received from the source system.\n\nA junior data engineer has suggested enabling the Change Data Feed (CDF) feature on the table in order to identify those rows that were updated, inserted, or deleted.\n\nWhich response to the junior data engineer's suggestion is correct?",
+      "options": {
+        "A": "CDF can not be enabled on existing tables. It can only be enabled on newly created tables.",
+        "B": "Table's data changes captured by CDF can only be read in streaming mode.",
+        "C": "CDF is useful when only a small fraction of records are updated in each batch.",
+        "D": "CDF is useful when the table is a Slowly Changing Dimension (SCD) of Type 2.",
+        "E": "All the above are correct responses to the data engineer's suggestion."
+      },
+      "correct_answer": "C",
+      "explanation": "CDF is designed for incremental change propagation and is most useful when only a small fraction of records are updated in each batch. If most records are updated or the table is fully overwritten each batch (as in this scenario), CDF is not beneficial."
+    },
+    {
+      "id": 22,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Identify Slowly Changing Dimension (SCD) types from data examples.",
+      "question_text": "Given the following two versions of a Delta Lake table before and after an update:\n\nBefore:\n| user_id | name  | address              | city   |\n|---------|-------|----------------------|--------|\n| 001     | John  | 4, Oxford Street     | London |\n| 002     | Sarah | 99, Victor Hugo Street | Paris |\n\nAfter:\n| user_id | name  | address              | city   |\n|---------|-------|----------------------|--------|\n| 001     | John  | 25, King's Road      | London |\n| 002     | Sarah | 99, Victor Hugo Street | Paris |\n\nWhich SCD Type is this table?",
+      "options": {
+        "A": "SCD Type 0",
+        "B": "SCD Type 1",
+        "C": "SCD Type 2",
+        "D": "It's a combination of Type 0 and Type 2 SCDs",
+        "E": "More information is needed to determine the SCD Type of this table"
+      },
+      "correct_answer": "B",
+      "explanation": "In SCD Type 1, new data overwrites the existing data. The old value is lost and not stored elsewhere. Here, John's address was updated in place from '4, Oxford Street' to '25, King's Road' with no history preserved."
+    },
+    {
+      "id": 23,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Interpret Spark UI summary metrics to identify data skew.",
+      "question_text": "A data engineer is analyzing a Spark job via the Spark UI. They have the following summary metrics for 27 completed tasks in a particular stage:\n\n| Metric | Min | 25th percentile | Median | 75th percentile | Max |\n|---|---|---|---|---|---|\n| Duration | 1.6 s | 2 s | 2 s | 3 s | 30 s |\n| GC Time | 20.0 ms | 32.0 ms | 44.0 ms | 51.0 ms | 1.9 s |\n| Input Size / Records | 78 KiB / 16 | 179 KiB / 49 | 183.9 KiB / 55 | 186.7 KiB / 67 | 803 KiB / 276 |\n| Shuffle Write Size / Records | 1.4 KiB / 16 | 6.1 KiB / 49 | 6.9 KiB / 55 | 8.1 KiB / 67 | 300.8 KiB / 276 |\n\nWhich conclusion can the data engineer draw from the above statistics?",
+      "options": {
+        "A": "All tasks are operating over partitions with even amounts of data.",
+        "B": "All tasks are operating over empty or near empty partitions.",
+        "C": "All tasks are operating over partitions with larger skewed amounts of data.",
+        "D": "A number of tasks are operating over partitions with larger skewed amounts of data.",
+        "E": "A number of tasks are operating over empty or near empty partitions."
+      },
+      "correct_answer": "D",
+      "explanation": "The large gap between the 75th percentile and the max values (e.g., Duration: 3s vs 30s, Input Size: 186.7 KiB vs 803 KiB) indicates that a small number of tasks are processing significantly more data than the rest, pointing to data skew."
+    },
+    {
+      "id": 24,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand cluster permission levels for attaching notebooks.",
+      "question_text": "Which of the following describes the minimal permissions a data engineer needs to attach a notebook to an existing cluster?",
+      "options": {
+        "A": "\"Can Attach To\" privilege on the cluster",
+        "B": "\"Can Restart\" privilege on the cluster",
+        "C": "\"Can Manage\" privilege on the cluster",
+        "D": "Cluster creation allowed + \"Can Attach To\" privileges on the cluster",
+        "E": "Cluster creation allowed + \"Can Restart\" privileges on the cluster"
+      },
+      "correct_answer": "A",
+      "explanation": "\"Can Attach To\" is the minimum permission level required to attach a notebook to an existing cluster."
+    },
+    {
+      "id": 25,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Spark Structured Streaming windowed aggregations with watermarking.",
+      "question_text": "Given the following streaming query:\n\n```python\nspark.readStream\n  .table(\"orders_cleaned\")\n  .withWatermark(\"order_timestamp\", \"10 minutes\")\n  .groupBy(\n    window(\"order_timestamp\", \"5 minutes\").alias(\"time\"),\n    \"author\")\n  .agg(\n    count(\"order_id\").alias(\"orders_count\"),\n    avg(\"quantity\").alias(\"avg_quantity\"))\n  .writeStream\n  .option(\"checkpointLocation\", \"dbfs:/path/checkpoint\")\n  .table(\"orders_stats\")\n```\n\nWhich of the following statements best describes this query?",
+      "options": {
+        "A": "It calculates business-level aggregates for each non-overlapping ten-minute interval. Incremental state information is maintained for 5 minutes for late-arriving data.",
+        "B": "It calculates business-level aggregates for each non-overlapping five-minute interval. Incremental state information is maintained for 10 minutes for late-arriving data.",
+        "C": "It calculates business-level aggregates for each overlapping five-minute interval. Incremental state information is maintained for 10 minutes for late-arriving data.",
+        "D": "It calculates business-level aggregates for each overlapping ten-minute interval. Incremental state information is maintained for 5 minutes for late-arriving data.",
+        "E": "None of the above statements correctly describe this query."
+      },
+      "correct_answer": "B",
+      "explanation": "The window function with a single duration argument (\"5 minutes\") creates non-overlapping (tumbling) five-minute windows. The withWatermark of \"10 minutes\" maintains state for 10 minutes to handle late-arriving data."
+    },
+    {
+      "id": 26,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand DROP TABLE behaviour for managed Delta tables created with CTAS.",
+      "question_text": "The data engineering team has a Delta Lake table created with the following query:\n\n```sql\nCREATE TABLE customers_clone\nAS SELECT * FROM customers\n```\n\nA data engineer wants to drop the table with the following query:\n\n```sql\nDROP TABLE customers_clone\n```\n\nWhich statement describes the result of running this drop command?",
+      "options": {
+        "A": "An error will occur as the table is deep cloned from the `customers` table.",
+        "B": "An error will occur as the table is shallow cloned from the `customers` table.",
+        "C": "Only the table's metadata will be deleted from the catalog, while the data files will be kept in the storage.",
+        "D": "Both the table's metadata and the data files will be deleted.",
+        "E": "The table will not be dropped until `VACUUM` command is run."
+      },
+      "correct_answer": "D",
+      "explanation": "`CREATE TABLE AS SELECT` creates a managed table (no `LOCATION` clause). Dropping a managed Delta table removes both the metadata from the catalog and the underlying data files."
+    },
+    {
+      "id": 27,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know how to verify CHECK constraints on a Delta table.",
+      "question_text": "A data engineer added a `CHECK` constraint to the table using the following command:\n\n```sql\nALTER TABLE sales ADD CONSTRAINT valid_date CHECK (item_date >= '2023-01-01');\n```\n\nWhich of the following commands allows the data engineer to verify that the constraint has been successfully added on the table?",
+      "options": {
+        "A": "`SHOW TBLPROPERTIES sales`",
+        "B": "`DESCRIBE TABLE sales`",
+        "C": "`DESCRIBE EXTENDED sales`",
+        "D": "`SHOW CONSTRAINTS sales`",
+        "E": "`SHOW CONSTRAINT valid_date`"
+      },
+      "correct_answer": "D",
+      "explanation": "`SHOW CONSTRAINTS sales` lists all constraints defined on the table, allowing verification that the `valid_date` constraint was successfully added."
+    },
+    {
+      "id": 28,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know how to sync changes to a deep clone table.",
+      "question_text": "A data engineer has a Delta Lake table named `orders_archive` created using the following command:\n\n```sql\nCREATE TABLE orders_archive\nDEEP CLONE orders\n```\n\nThey want to sync up the new changes in the `orders` table to the clone.\n\nWhich of the following commands can be run to achieve this task?",
+      "options": {
+        "A": "`REFRESH orders_archive`",
+        "B": "`SYNC orders_archive`",
+        "C": "`INSERT OVERWRITE orders_archive SELECT * FROM orders`",
+        "D": "`CREATE OR REPLACE TABLE orders_archive DEEP CLONE orders`",
+        "E": "`DROP TABLE orders_archive; CREATE TABLE orders_archive DEEP CLONE orders`"
+      },
+      "correct_answer": "C",
+      "explanation": "`INSERT OVERWRITE` replaces all data in `orders_archive` with the current data from `orders`, effectively syncing the clone. There is no `REFRESH` or `SYNC` command for deep clones."
+    },
+    {
+      "id": 29,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand CTAS statement capabilities and limitations.",
+      "question_text": "Which of the following statements is Not true about CTAS statements?",
+      "options": {
+        "A": "`CTAS` statements automatically infer schema information from query results.",
+        "B": "`CTAS` statements support manual schema declaration.",
+        "C": "`CTAS` statements stand for `CREATE TABLE _ AS SELECT` statement.",
+        "D": "With `CTAS` statements, data will be inserted during the table creation.",
+        "E": "All these statements are Not true about `CTAS` statements."
+      },
+      "correct_answer": "B",
+      "explanation": "`CTAS` statements do not support manual schema declaration. The schema is automatically inferred from the `SELECT` query results. You cannot explicitly define column names and data types within the `CTAS` syntax itself."
+    },
+    {
+      "id": 30,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the purpose of the '# Databricks notebook source' comment.",
+      "question_text": "A data engineer has noticed the comment `# Databricks notebook source` on the first line of each Databricks Python file's source code pushed to Github.\n\nWhich of the following explains the purpose of this comment?",
+      "options": {
+        "A": "This comment makes it easier for humans to understand the source of the generated code from Databricks.",
+        "B": "This comment establishes the Python files as Databricks notebooks.",
+        "C": "This comment is used for Python auto-generated documentation.",
+        "D": "This comment adds the Python file to the search index in Databricks workspace.",
+        "E": "There is no special purpose for this comment. Comments in Python are ignored by the interpreter."
+      },
+      "correct_answer": "B",
+      "explanation": "When Databricks exports notebooks as Python files, it includes this comment as metadata. When the file is imported back into Databricks, this comment signals that the file should be reconstructed as a notebook with its original cell structure."
+    },
+    {
+      "id": 31,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand multi-task job behaviour when a task fails with independent (parallel) dependencies.",
+      "question_text": "Given a multi-task job where Task_1 is upstream, and Task_2 and Task_3 are both downstream of Task_1 (running in parallel).\n\nIf there is an error in the notebook 2 that is associated with Task 2, which statement describes the run result of this job?",
+      "options": {
+        "A": "Task 1 will succeed. Task 2 will partially fail. Task 3 will be skipped.",
+        "B": "Task 1 will succeed. Task 2 will completely fail. Task 3 will be skipped.",
+        "C": "Tasks 1 and 3 will succeed, while Task 2 will partially fail.",
+        "D": "Tasks 1 and 3 will succeed, while Task 2 will completely fail.",
+        "E": "All tasks will completely fail."
+      },
+      "correct_answer": "D",
+      "explanation": "In a multi-task job, tasks run independently based on their dependency graph. Task 1 completes successfully as the upstream task. Task 2 fails due to the notebook error. Task 3 succeeds because it has no dependency on Task 2."
+    },
+    {
+      "id": 32,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know how to execute SQL within a foreachBatch function on Databricks Runtime below 10.5.",
+      "question_text": "A data engineer is using a `foreachBatch` logic to upsert data in a target Delta table. The function to be called at each new microbatch processing is displayed below with a blank:\n\n```python\ndef upsert_data(microBatchDF, batch_id):\n    microBatchDF.createOrReplaceTempView(\"sales_microbatch\")\n    sql_query = \"\"\"\n        MERGE INTO sales_silver a\n        USING sales_microbatch b\n        ON a.item_id=b.item_id\n        AND a.item_timestamp=b.item_timestamp\n        WHEN NOT MATCHED THEN INSERT *\n    \"\"\"\n    ________________\n```\n\nWhich option correctly fills in the blank to execute the SQL query in the function on a cluster with Databricks Runtime below 10.5?",
+      "options": {
+        "A": "`spark.sql(sql_query)`",
+        "B": "`batch_id.sql(sql_query)`",
+        "C": "`microBatchDF.sql(sql_query)`",
+        "D": "`microBatchDF.sparkSession.sql(sql_query)`",
+        "E": "`microBatchDF._jdf.sparkSession().sql(sql_query)`"
+      },
+      "correct_answer": "D",
+      "explanation": "In a `foreachBatch` function, the correct way to execute SQL on Databricks Runtime below 10.5 is via `microBatchDF.sparkSession.sql(sql_query)`, which accesses the `SparkSession` associated with the micro-batch DataFrame."
+    },
+    {
+      "id": 33,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand how to use withWatermark for handling late-arriving data in streaming.",
+      "question_text": "A data engineer has the following streaming query with a blank:\n\n```python\nspark.readStream\n  .table(\"orders_cleaned\")\n  ____________________________\n  .groupBy(\n    \"order_timestamp\",\n    \"author\")\n  .agg(\n    count(\"order_id\").alias(\"orders_count\"),\n    avg(\"quantity\").alias(\"avg_quantity\"))\n  .writeStream\n  .option(\"checkpointLocation\", \"dbfs:/path/checkpoint\")\n  .table(\"orders_stats\")\n```\n\nFor handling late-arriving data, they want to maintain the streaming state information for 30 minutes.\n\nWhich option correctly fills in the blank to meet this requirement?",
+      "options": {
+        "A": "`.trigger(processingTime=\"30 minutes\")`",
+        "B": "`.awaitTermination(\"order_timestamp\", \"30 minutes\")`",
+        "C": "`.awaitWatermark(\"order_timestamp\", \"30 minutes\")`",
+        "D": "`.withWatermark(\"order_timestamp\", \"30 minutes\")`",
+        "E": "`.window(\"order_timestamp\", \"30 minutes\")`"
+      },
+      "correct_answer": "D",
+      "explanation": "The `withWatermark` function specifies a column and a delay threshold for tracking state information for late-arriving data. Setting it to `\"30 minutes\"` maintains streaming state for that window."
+    },
+    {
+      "id": 34,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand DROP TABLE behaviour on a source table when a CTAS-derived table exists.",
+      "question_text": "The data engineering team has a Delta Lake table created with the following query:\n\n```sql\nCREATE TABLE target\nAS SELECT * FROM source\n```\n\nA data engineer wants to drop the source table with the following query:\n\n```sql\nDROP TABLE source\n```\n\nWhich statement describes the result of running this drop command?",
+      "options": {
+        "A": "An error will occur indicating that other tables are based on this source table.",
+        "B": "Both the target and source tables will be dropped.",
+        "C": "No table will be dropped until `CASCADE` keyword is added to the command.",
+        "D": "Only the source table will be dropped, but the target table will be no more queryable.",
+        "E": "Only the source table will be dropped, while the target table will not be affected."
+      },
+      "correct_answer": "E",
+      "explanation": "`CTAS` creates a new independent table populated with data from the query. The target table has its own copy of the data and metadata. Dropping the source table has no effect on the target."
+    },
+    {
+      "id": 35,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand DROP TABLE behaviour for external (unmanaged) Delta tables.",
+      "question_text": "The data engineering team has a Delta Lake table created with the following query:\n\n```sql\nCREATE TABLE customers_clone\nLOCATION 'dbfs:/mnt/backup'\nAS SELECT * FROM customers\n```\n\nA data engineer wants to drop the table with the following query:\n\n```sql\nDROP TABLE customers_clone\n```\n\nWhich statement describes the result of running this drop command?",
+      "options": {
+        "A": "An error will occur as the table is deep cloned from the `customers` table.",
+        "B": "An error will occur as the table is shallow cloned from the `customers` table.",
+        "C": "Only the table's metadata will be deleted from the catalog, while the data files will be kept in the storage.",
+        "D": "Both the table's metadata and the data files will be deleted.",
+        "E": "The table will not be dropped until `VACUUM` command is run."
+      },
+      "correct_answer": "C",
+      "explanation": "The `LOCATION` clause makes this an external (unmanaged) table. Dropping an external table only removes the metadata from the catalog. The underlying data files at the specified location are preserved."
+    },
+    {
+      "id": 36,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand how Databricks secrets are redacted in notebook output.",
+      "question_text": "Given the following code block in a notebook:\n\n```python\ndb_password = dbutils.secrets.get(scope=\"dev\", key=\"database_password\")\nprint(db_password)\n```\n\nWhich statement describes what will happen when the above code is executed?",
+      "options": {
+        "A": "An interactive input box will appear in the notebook.",
+        "B": "The string `\"REDACTED\"` will be printed.",
+        "C": "The error message `\"Secrets can not be printed\"` will be shown.",
+        "D": "The string value of the password will be printed in plain text.",
+        "E": "If the user has `\"Can Read\"` permission, the string value of the password will be printed in plain text. Otherwise, the string `\"REDACTED\"` will be printed."
+      },
+      "correct_answer": "B",
+      "explanation": "Databricks redacts secret values that are read using `dbutils.secrets.get()` when displayed in notebook cell output. The values are replaced with `[REDACTED]` to prevent accidental exposure."
+    },
+    {
+      "id": 37,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the limitations of the %sh magic command.",
+      "question_text": "A junior data engineer is using the %sh magic command to run some legacy code. A senior data engineer has recommended refactoring the code instead.\n\nWhich of the following could explain why a data engineer may need to avoid using the %sh magic command?",
+      "options": {
+        "A": "`%sh` restarts the Python interpreter. This clears all the variables declared in the notebook.",
+        "B": "`%sh` executes shell code only on the local driver machine which leads to significant performance overhead.",
+        "C": "`%sh` can not access storage to persist the output.",
+        "D": "All the above reasons explain why `%sh` may need to be avoided.",
+        "E": "None of these reasons correctly describe why `%sh` may need to be avoided."
+      },
+      "correct_answer": "B",
+      "explanation": "The `%sh` magic command runs shell code only on the Apache Spark driver node, not on worker nodes. This means it does not benefit from distributed computing and can cause performance overhead."
+    },
+    {
+      "id": 38,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand how Delta Lake file statistics enable data skipping for query optimisation.",
+      "question_text": "Given a Delta table `products` with the following schema:\n\n```\nname STRING, category STRING, expiration_date DATE, price FLOAT\n```\n\nWhen executing the below query:\n\n```sql\nSELECT * FROM products\nWHERE price > 30.5\n```\n\nWhich of the following will be leveraged by the query optimizer to identify the data files to load?",
+      "options": {
+        "A": "Column statistics in the Hive metastore",
+        "B": "Column statistics in the metadata of Parquet files",
+        "C": "File statistics in the Delta transaction log",
+        "D": "File statistics in the Hive metastore",
+        "E": "None of the above. All data files are fully scanned to identify the ones to load."
+      },
+      "correct_answer": "C",
+      "explanation": "Delta Lake stores file-level statistics (min/max values, null counts) in the transaction log. The query optimiser uses these statistics to skip data files that cannot contain matching records for the `WHERE` clause filter."
+    },
+    {
+      "id": 39,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand how VACUUM on a source table affects shallow clones.",
+      "question_text": "The data engineering team has a table `orders_backup` that was created using Delta Lake's `SHALLOW CLONE` functionality from the table `orders`. Recently, the team started getting an error when querying the `orders_backup` table indicating that some data files are no longer present.\n\nWhich of the following correctly explains this error?",
+      "options": {
+        "A": "The `VACUUM` command was run on the `orders` table.",
+        "B": "The `VACUUM` command was run on the `orders_backup` table.",
+        "C": "The `OPTIMIZE` command was run on the `orders` table.",
+        "D": "The `OPTIMIZE` command was run on the `orders_backup` table.",
+        "E": "The `REFRESH` command was run on the `orders_backup` table."
+      },
+      "correct_answer": "A",
+      "explanation": "Shallow clones only copy the transaction log, not the data files. They reference the source table's data files. Running `VACUUM` on the source table can purge data files that the shallow clone still references, causing errors when querying the clone."
+    },
+    {
+      "id": 40,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Use Delta Lake Time Travel with set operations to compare table versions.",
+      "question_text": "The data engineering team has a Delta Lake table named `daily_activities` that is completely overwritten each night with new data. For auditing purposes, the team wants to determine the difference between the new version and the previous version of the table. They start by getting the current table version:\n\n```python\ncurrent_version = spark.sql(\"SELECT max(version) FROM (DESCRIBE HISTORY daily_activities)\").collect()[0][0]\n```\n\nWhich of the following queries can be used to complete this task?",
+      "options": {
+        "A": "`SELECT * FROM daily_activities UNION SELECT * FROM daily_activities AS VERSION = {current_version-1}`",
+        "B": "`SELECT * FROM daily_activities UNION ALL SELECT * FROM daily_activities@v{current_version-1}`",
+        "C": "`SELECT * FROM daily_activities INTERSECT SELECT * FROM daily_activities AS VERSION = {current_version-1}`",
+        "D": "`SELECT * FROM daily_activities EXCEPT SELECT * FROM daily_activities@v{current_version-1}`",
+        "E": "`SELECT * FROM daily_activities MINUS SELECT * FROM daily_activities AS VERSION = {current_version-1}`"
+      },
+      "correct_answer": "D",
+      "explanation": "The `EXCEPT` set operator returns rows from the first query that are not in the second query. Using the `@v` syntax for time travel, this query returns the difference between the current version and the previous version."
+    },
+    {
+      "id": 41,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know how to handle CDC feeds with multiple changes per key in the same batch.",
+      "question_text": "The data engineering team wants to build a pipeline that receives customer data as a change data capture (CDC) feed from a source system. The CDC events contain record data along with metadata indicating whether the record was inserted, updated, or deleted. A timestamp field update_time indicates the order of changes. Each record has a primary key customer_id.\n\nIn the same batch, multiple changes for the same customer could be received with different update_time. The team wants to store only the most recent information for each customer in the target Delta Lake table.\n\nWhich of the following solutions meets these requirements?",
+      "options": {
+        "A": "Enable Delta Lake's Change Data Feed (CDF) on the target table to automatically merge the received CDC feed.",
+        "B": "Use `MERGE INTO` to upsert the most recent entry for each `customer_id` into the table.",
+        "C": "Use `MERGE INTO` with `SEQUENCE BY` clause on the `update_time` for ordering how operations should be applied.",
+        "D": "Use `dropDuplicates` function to remove duplicates by `customer_id`, then merge the duplicate records into the table.",
+        "E": "Use the option `mergeSchema` when writing the CDC data into the table to automatically merge the changed data with its most recent schema."
+      },
+      "correct_answer": "B",
+      "explanation": "`MERGE INTO` allows upserting the most recent entry for each `customer_id` into the target table. This handles insert, update, and delete operations from the CDC feed."
+    },
+    {
+      "id": 42,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Choose the most cost-effective incremental batch processing approach.",
+      "question_text": "The data engineering team has a singleplex bronze table called 'orders_raw' where new orders data is appended every night. They created a new Silver table called 'orders_cleaned' for a more refined view.\n\nThe team wants to create a batch processing pipeline to process all new records inserted in orders_raw and propagate them to orders_cleaned.\n\nWhich solution minimizes the compute costs to propagate this batch of data?",
+      "options": {
+        "A": "Use time travel capabilities in Delta Lake to compare the latest version of `orders_raw` with one version prior, then write the difference to the `orders_cleaned` table.",
+        "B": "Use Spark Structured Streaming to process the new records from `orders_raw` in batch mode using the `trigger(availableNow=True)` option.",
+        "C": "Use Spark Structured Streaming's `foreachBatch` logic to process the new records from `orders_raw` using `trigger(processingTime=\"24 hours\")`.",
+        "D": "Use batch overwrite logic to reprocess all records in `orders_raw` and overwrite the `orders_cleaned` table.",
+        "E": "Use insert-only merge into the `orders_cleaned` table using `orders_raw` data based on a composite key."
+      },
+      "correct_answer": "B",
+      "explanation": "`trigger(availableNow=True)` consumes all available new records in an incremental batch, processing only what has changed. This minimises compute costs compared to reprocessing all data or running a continuous stream."
+    },
+    {
+      "id": 43,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Choose the right materialisation strategy (view vs table) based on cost and latency requirements.",
+      "question_text": "The data engineering team has a Silver table called 'sales_cleaned' where new sales data is appended in near real-time. They want to create a new Gold-layer entity to calculate year-to-date (YTD) sales amount with schema:\n\ncountry_code STRING, category STRING, ytd_total_sales FLOAT, updated TIMESTAMP\n\nThe metrics only need to be recalculated once daily. But since they will be queried very frequently by several business teams, the team wants to cut down the potential costs and latency associated with materialising the results.\n\nWhich of the following solutions meets these requirements?",
+      "options": {
+        "A": "Define the new entity as a view to avoid persisting the results each time the metrics are recalculated.",
+        "B": "Define the new entity as a global temporary view since it can be shared between notebooks or jobs that share computing resources.",
+        "C": "Configure a nightly batch job to recalculate the metrics and store them as a table overwritten with each update.",
+        "D": "Create multiple tables, one per business team so the metrics can be queried quickly and efficiently.",
+        "E": "All the above solutions meet the required requirements since Databricks uses the Delta Caching feature."
+      },
+      "correct_answer": "C",
+      "explanation": "A nightly batch job that materialises results as a table avoids recomputing the aggregation on every query. Since multiple teams query frequently, pre-computed results in a table reduce both cost and latency compared to a view that recomputes each time."
+    },
+    {
+      "id": 44,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know the command used to compact small data files in Delta Lake.",
+      "question_text": "Which of the following commands can a data engineer use to compact small data files of a Delta table into larger ones?",
+      "options": {
+        "A": "`PARTITION BY`",
+        "B": "`ZORDER BY`",
+        "C": "`COMPACT`",
+        "D": "`VACUUM`",
+        "E": "`OPTIMIZE`"
+      },
+      "correct_answer": "E",
+      "explanation": "The `OPTIMIZE` command compacts small files into larger ones to improve read query performance. It is the standard Delta Lake command for file compaction."
+    },
+    {
+      "id": 45,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Auto Optimize and its two complementary operations.",
+      "question_text": "\"A Delta Lake functionality that automatically compacts small files during individual writes to a table by performing two complementary operations on the table.\"\n\nWhich of the following is being described in the above statement?",
+      "options": {
+        "A": "Optimized writes",
+        "B": "Auto compaction",
+        "C": "Auto Optimize",
+        "D": "`OPTIMIZE` command",
+        "E": "`REORG TABLE` command"
+      },
+      "correct_answer": "C",
+      "explanation": "Auto Optimize is the feature that performs two complementary operations: Optimized Writes (targets 128 MB files per partition during writes) and Auto Compaction (runs an `OPTIMIZE` job after writes if further compaction is possible)."
+    },
+    {
+      "id": 46,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand how Delta Lake auto-tunes file sizes based on workload patterns.",
+      "question_text": "The data engineering team has a large external Delta table where new changes are merged very frequently. They enabled Optimized Writes and Auto Compaction on the table to target files of 128 MB. However, most data files are smaller than 128 MB.\n\nWhich of the following likely explains these smaller file sizes?",
+      "options": {
+        "A": "Optimized Writes and Auto Compaction have no effect on large Delta tables. The table needs to be partitioned so Auto Compaction can be applied at partition level.",
+        "B": "Optimized Writes and Auto Compaction have no effect on external tables. The table needs to be managed in order to store file size information in the Hive metastore.",
+        "C": "Optimized Writes and Auto Compaction automatically generate smaller data files to reduce the duration of future `MERGE` operations.",
+        "D": "Auto Compaction supports Auto Z-Ordering which is more expensive than just compaction.",
+        "E": "The team needs to look at the table's `_auto_optimize` directory, where all new compacted files are written."
+      },
+      "correct_answer": "C",
+      "explanation": "Databricks automatically tunes file sizes based on workload. For tables with frequent `MERGE` operations, smaller files are generated to minimise the data that needs to be rewritten during future merges."
+    },
+    {
+      "id": 47,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand streaming state management in Stream-Stream Joins.",
+      "question_text": "Which statement regarding streaming state in Stream-Stream Joins is correct?",
+      "options": {
+        "A": "Stream-Stream Joins are not stateful. Spark does not buffer past inputs as streaming state for the input streams.",
+        "B": "Spark buffers past inputs as streaming state only for the left input stream, so that it can match future right inputs with past left inputs.",
+        "C": "Spark buffers past inputs as streaming state only for the right input stream, so that it can match future left inputs with past right inputs.",
+        "D": "Spark buffers past inputs as streaming state for both input streams, so that it can match every future input with past inputs.",
+        "E": "Stream-Stream Joins do not support limiting the state information using watermarks."
+      },
+      "correct_answer": "D",
+      "explanation": "In Stream-Stream Joins, Spark buffers past inputs as streaming state for both input streams. This allows matching every future input with past inputs from the other stream. Watermarks can be used to limit the state."
+    },
+    {
+      "id": 48,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the behaviour of static Delta tables in Stream-Static Joins.",
+      "question_text": "Which statement regarding static Delta tables in Stream-Static joins is correct?",
+      "options": {
+        "A": "Static Delta tables must be small enough to be broadcasted to all worker nodes in the cluster.",
+        "B": "Static Delta tables need to be partitioned in order to be used in stream-static join.",
+        "C": "Static Delta tables need to be refreshed with `REFRESH TABLE` command for each microbatch of a stream-static join.",
+        "D": "The latest version of the static Delta table is returned each time it is queried by a microbatch of the stream-static join.",
+        "E": "The latest version of the static Delta table is returned only for the first microbatch of the stream-static join. Then, it will be cached to be used by any upcoming microbatch."
+      },
+      "correct_answer": "D",
+      "explanation": "In Stream-Static joins, Delta Lake guarantees that the latest version of the static table is returned each time it is queried in a join operation with a data stream. No manual refresh is needed."
+    },
+    {
+      "id": 49,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know the recommended cluster type for production Databricks jobs.",
+      "question_text": "For production Databricks jobs, which of the following cluster types is recommended to use?",
+      "options": {
+        "A": "All-purpose clusters",
+        "B": "Production clusters",
+        "C": "Job clusters",
+        "D": "On-premises clusters",
+        "E": "Serverless clusters"
+      },
+      "correct_answer": "C",
+      "explanation": "Job clusters are recommended for production jobs. They are dedicated to a job or task run, auto-terminate after completion (saving cost), and provide fully isolated execution environments."
+    },
+    {
+      "id": 50,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Identify incorrect statements about Spark Structured Streaming checkpointing.",
+      "question_text": "Which statement regarding checkpointing in Spark Structured Streaming is Not correct?",
+      "options": {
+        "A": "Checkpoints store the current state of a streaming job to cloud storage.",
+        "B": "Checkpointing allows the streaming engine to track the progress of stream processing.",
+        "C": "Checkpoints can be shared between separate streams.",
+        "D": "To specify the checkpoint in a streaming query, we use the `checkpointLocation` option.",
+        "E": "Checkpointing with write-ahead logs mechanism ensures fault-tolerant stream processing."
+      },
+      "correct_answer": "C",
+      "explanation": "Checkpoints cannot be shared between separate streams. Each stream requires its own checkpoint directory to ensure correct processing guarantees."
+    },
+    {
+      "id": 51,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand Delta Lake Auto Compaction behaviour.",
+      "question_text": "Which of the following statements best describes Delta Lake Auto Compaction?",
+      "options": {
+        "A": "Auto Compaction occurs after a write to a table has succeeded to check if files can further be compacted; if yes, it runs an `OPTIMIZE` job with Z-Ordering toward a file size of 128 MB.",
+        "B": "Auto Compaction occurs after a write to a table has succeeded to check if files can further be compacted; if yes, it runs an `OPTIMIZE` job without Z-Ordering toward a file size of 128 MB.",
+        "C": "Auto Compaction occurs after a write to a table has succeeded to check if files can further be compacted; if yes, it runs an `OPTIMIZE` job with Z-Ordering toward a file size of 1 GB.",
+        "D": "Auto Compaction occurs after a write to a table has succeeded to check if files can further be compacted; if yes, it runs an `OPTIMIZE` job without Z-Ordering toward a file size of 1 GB.",
+        "E": "None of the above statements correctly describe Delta Lake Auto Compaction."
+      },
+      "correct_answer": "B",
+      "explanation": "Auto Compaction checks after each write whether files can be further compacted, and if so, runs an `OPTIMIZE` job without Z-Ordering targeting 128 MB file sizes (not the 1 GB used by the standard `OPTIMIZE` command)."
+    },
+    {
+      "id": 52,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand what Auto Loader does.",
+      "question_text": "Which of the following statements best describes Auto Loader?",
+      "options": {
+        "A": "Auto Loader allows applying Change Data Capture (CDC) feed to update tables based on changes captured in source data.",
+        "B": "Auto Loader monitors a source location, in which files accumulate, to identify and ingest only new arriving files with each command run. While the files that have already been ingested in previous runs are skipped.",
+        "C": "Auto Loader allows cloning a source Delta table to a target destination at a specific version.",
+        "D": "Auto Loader defines data quality expectations on the contents of a dataset, and reports the records that violate these expectations in metrics.",
+        "E": "Auto Loader enables efficient insert, update, deletes, and rollback capabilities by adding a storage layer that provides better data reliability to data lakes."
+      },
+      "correct_answer": "B",
+      "explanation": "Auto Loader incrementally and idempotently processes new data files as they arrive in cloud storage. It tracks which files have already been ingested and skips them in subsequent runs."
+    },
+    {
+      "id": 53,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know the correct PySpark function for deduplication based on specific columns.",
+      "question_text": "Which of the following functions can a data engineer use to return a new DataFrame containing the distinct rows from a given DataFrame based on multiple columns?",
+      "options": {
+        "A": "`pyspark.sql.DataFrame.drop`",
+        "B": "`pyspark.sql.DataFrame.distinct`",
+        "C": "`pyspark.sql.DataFrame.dropDuplicates`",
+        "D": "`pyspark.sql.DataFrame.na.drop`",
+        "E": "`pyspark.sql.DataFrame.dropna`"
+      },
+      "correct_answer": "C",
+      "explanation": "`dropDuplicates` returns a new DataFrame with duplicate rows removed, optionally considering only a specified subset of columns. Unlike `distinct()`, it supports column-based deduplication."
+    },
+    {
+      "id": 54,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know the correct approach for streaming deduplication.",
+      "question_text": "Which of the following approaches allows to correctly perform streaming deduplication?",
+      "options": {
+        "A": "De-duplicate records within each batch, and then append the result into the target table.",
+        "B": "De-duplicate records within each batch, and then merge the result into the target table using insert-only merge.",
+        "C": "De-duplicate records within each batch, rank the result, and then insert only records having rank = 1 into the target table.",
+        "D": "De-duplicate records in all batches with watermarking, and then overwrite the target table by the result.",
+        "E": "None of the above approaches allows to correctly perform streaming deduplication."
+      },
+      "correct_answer": "B",
+      "explanation": "Correct streaming deduplication uses `dropDuplicates()` within each micro-batch, followed by insert-only merge into the target table. The merge ensures records already present in the target are not re-inserted."
+    },
+    {
+      "id": 55,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the limitation of non-time-based window operations on streaming DataFrames.",
+      "question_text": "A junior data engineer is testing the following code block to get the newest entry for each item added in the `sales` table since the last table update:\n\n```python\nfrom pyspark.sql import functions as F\nfrom pyspark.sql.window import Window\n\nwindow = Window.partitionBy(\"item_id\").orderBy(F.col(\"item_time\").desc())\n\nranked_df = (spark.readStream\n    .table(\"sales\")\n    .withColumn(\"rank\", F.rank().over(window))\n    .filter(\"rank == 1\")\n    .drop(\"rank\")\n)\ndisplay(ranked_df)\n```\n\nHowever, the command fails when executed.\n\nWhich statement explains the cause of this failure?",
+      "options": {
+        "A": "The query output can not be displayed. They should use `spark.writeStream` to persist the query result.",
+        "B": "Watermarking is missing. It should be added to allow tracking state information for the window of time.",
+        "C": "Non-time-based window operations are not supported on streaming DataFrames. They need to be implemented inside a `foreachBatch` logic instead.",
+        "D": "The `item_id` field is not unique. Records must be de-duplicated on the `item_id` using `dropDuplicates` function.",
+        "E": "The `item_id` field is not unique. The `drop(\"rank\")` must be called before applying the rank function in order to drop any duplicate record."
+      },
+      "correct_answer": "C",
+      "explanation": "Non-time-based window operations (such as `rank()` partitioned by a non-time column) are not supported on streaming DataFrames. These operations must be implemented inside a `foreachBatch` function instead."
+    },
+    {
+      "id": 56,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the behaviour of streaming reads from Change Data Feed.",
+      "question_text": "Given the following query on the Delta table `customers` on which Change Data Feed is enabled:\n\n```python\nspark.readStream\n  .option(\"readChangeFeed\", \"true\")\n  .option(\"startingVersion\", 0)\n  .table(\"customers\")\n  .filter(col(\"_change_type\").isin([\"update_postimage\"]))\n  .writeStream\n  .option(\"checkpointLocation\", \"dbfs:/checkpoints\")\n  .trigger(availableNow=True)\n  .table(\"customers_updates\")\n```\n\nWhich statement describes the results of this query each time it is executed?",
+      "options": {
+        "A": "Newly updated records will be merged into the target table, modifying previous entries with the same primary keys.",
+        "B": "Newly updated records will be appended to the target table.",
+        "C": "Newly updated records will overwrite the target table.",
+        "D": "The entire history of updated records will be appended to the target table at each execution, which leads to duplicate entries.",
+        "E": "The entire history of updated records will overwrite the target table at each execution."
+      },
+      "correct_answer": "B",
+      "explanation": "Using `readStream` with CDF reads only new changes since the last checkpoint. The default write mode for streaming is append, so newly updated records (post-images) are appended to the target table with each execution."
+    },
+    {
+      "id": 57,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the behaviour of batch reads from Change Data Feed with overwrite mode.",
+      "question_text": "Given the following query on the Delta table `customers` on which Change Data Feed is enabled:\n\n```python\nspark.read\n  .option(\"readChangeFeed\", \"true\")\n  .option(\"startingVersion\", 0)\n  .table(\"customers\")\n  .filter(col(\"_change_type\").isin([\"update_postimage\"]))\n  .write\n  .mode(\"overwrite\")\n  .table(\"customers_updates\")\n```\n\nWhich statement describes the results of this query each time it is executed?",
+      "options": {
+        "A": "Newly updated records will be merged into the target table, modifying previous entries with the same primary keys.",
+        "B": "Newly updated records will be appended to the target table.",
+        "C": "Newly updated records will overwrite the target table.",
+        "D": "The entire history of updated records will be appended to the target table at each execution, which leads to duplicate entries.",
+        "E": "The entire history of updated records will overwrite the target table at each execution."
+      },
+      "correct_answer": "E",
+      "explanation": "Using `spark.read` (batch mode) with CDF reads all changes from `startingVersion` 0 every time. Combined with write mode `\"overwrite\"`, the entire history of updated records overwrites the target table at each execution."
+    },
+    {
+      "id": 58,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know the correct Auto Loader syntax for incremental near real-time ingestion.",
+      "question_text": "A data engineer wants to ingest input JSON data into a target Delta table. They want the data ingestion to happen incrementally in near real-time.\n\nWhich option correctly meets the specified requirement?",
+      "options": {
+        "A": "`spark.readStream.format(\"autoloader\").option(\"autoloader.format\", \"json\").load(source_path).writeStream.option(\"checkpointLocation\", checkpointPath).start(\"target_table\")`",
+        "B": "`spark.readStream.format(\"autoloader\").option(\"autoloader.format\", \"json\").load(source_path).writeStream.option(\"checkpointLocation\", checkpointPath).trigger(real-time=True).start(\"target_table\")`",
+        "C": "`spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"json\").load(source_path).writeStream.option(\"checkpointLocation\", checkpointPath).start(\"target_table\")`",
+        "D": "`spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"json\").load(source_path).writeStream.trigger(real-time=True).start(\"target_table\")`",
+        "E": "`spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"json\").load(source_path).writeStream.trigger(availableNow=True).start(\"target_table\")`"
+      },
+      "correct_answer": "C",
+      "explanation": "Auto Loader uses the format `\"cloudFiles\"` (not `\"autoloader\"`) with `cloudFiles.format` option. The default trigger (`processingTime=\"500ms\"`) provides near real-time processing. A `checkpointLocation` is required for fault tolerance."
+    },
+    {
+      "id": 59,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know the correct trigger syntax for processing-time-based micro-batches.",
+      "question_text": "Given the following Structured Streaming query:\n\n```python\n(spark.table(\"orders\")\n  .withColumn(\"total_after_tax\", col(\"total\")+col(\"tax\"))\n  .writeStream\n  .option(\"checkpointLocation\", checkpointPath)\n  .outputMode(\"append\")\n  ._____________\n  .table(\"new_orders\")\n)\n```\n\nFill in the blank to make the query execute a micro-batch to process data every 2 minutes.",
+      "options": {
+        "A": "`trigger(once=\"2 minutes\")`",
+        "B": "`trigger(processingTime=\"2 minutes\")`",
+        "C": "`processingTime(\"2 minutes\")`",
+        "D": "`trigger(\"2 minutes\")`",
+        "E": "`trigger()`"
+      },
+      "correct_answer": "B",
+      "explanation": "The `trigger(processingTime=\"2 minutes\")` method configures the stream to process data in micro-batches at 2-minute intervals."
+    },
+    {
+      "id": 60,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Know where and how Delta Lake file statistics are captured.",
+      "question_text": "Which statement regarding Delta Lake File Statistics is correct?",
+      "options": {
+        "A": "By default, Delta Lake captures statistics in the Hive metastore on the first 16 columns of each table.",
+        "B": "By default, Delta Lake captures statistics in the Hive metastore on the first 32 columns of each table.",
+        "C": "By default, Delta Lake captures statistics in the transaction log on the first 16 columns of each table.",
+        "D": "By default, Delta Lake captures statistics in the transaction log on the first 32 columns of each table.",
+        "E": "By default, Delta Lake captures statistics in both Hive metastore and transaction log for each added data file."
+      },
+      "correct_answer": "D",
+      "explanation": "Delta Lake captures file-level statistics (record count, min/max values, null counts) in the transaction log for the first 32 columns of each table by default. These are used for data skipping."
+    },
+    {
+      "id": 61,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the USAGE privilege in Databricks governance.",
+      "question_text": "A data engineer uses the following SQL query:\n\n```sql\nGRANT USAGE ON DATABASE sales_db TO finance_team\n```\n\nWhich of the following is the benefit of the `USAGE` privilege?",
+      "options": {
+        "A": "Gives read access on the database.",
+        "B": "Gives full permissions on the entire database.",
+        "C": "Gives the ability to view database objects and their metadata.",
+        "D": "No effect! but it's required to perform any action on the database.",
+        "E": "USAGE privilege is not part of the Databricks governance model."
+      },
+      "correct_answer": "D",
+      "explanation": "The `USAGE` privilege does not give any direct abilities by itself, but it is a prerequisite required to perform any action on a schema (database) object."
+    },
+    {
+      "id": 62,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Understand the purpose of the LOCATION keyword for Delta Lake tables.",
+      "question_text": "The data engineering team is using the LOCATION keyword for every new Delta Lake table created in the Lakehouse.\n\nWhich of the following describes the purpose of using the LOCATION keyword in this case?",
+      "options": {
+        "A": "The `LOCATION` keyword is used to configure the created Delta Lake tables as managed tables.",
+        "B": "The `LOCATION` keyword is used to configure the created Delta Lake tables as external tables.",
+        "C": "The `LOCATION` keyword is used to define the created Delta Lake tables in an external database.",
+        "D": "The `LOCATION` keyword is used to define the created Delta Lake tables in a database over a JDBC connection.",
+        "E": "The `LOCATION` keyword is used to set a default schema and checkpoint location for the created Delta Lake tables."
+      },
+      "correct_answer": "B",
+      "explanation": "The `LOCATION` clause creates external (unmanaged) tables whose data is stored at the specified external storage path. Dropping such tables only removes metadata, not the underlying data files."
+    },
+    {
+      "id": 63,
+      "section_id": null,
+      "section_title": null,
+      "objective": "Choose an appropriate partitioning column for a Delta Lake table.",
+      "question_text": "A data engineer wants to create a Delta Lake table for storing user activities of a website. The table has the following schema:\n\n```\nuser_id LONG, page STRING, activity_type LONG,\nip_address STRING, activity_time TIMESTAMP, activity_date DATE\n```\n\nBased on the above schema, which column is a good candidate for partitioning the Delta Table?",
+      "options": {
+        "A": "`user_id`",
+        "B": "`activity_type`",
+        "C": "`page`",
+        "D": "`activity_time`",
+        "E": "`activity_date`"
+      },
+      "correct_answer": "E",
+      "explanation": "`activity_date` is the best partitioning candidate. It has bounded, low cardinality (one value per day) and allows efficient time-based pruning. High-cardinality columns like `user_id` or `activity_time` would cause over-partitioning."
+    }
+  ]
+}
