@@ -10,7 +10,132 @@ import streamlit as st
 import database as db
 import questions_loader as ql
 
-st.set_page_config(page_title="Study Buddy", page_icon="📚", layout="centered")
+st.set_page_config(page_title="Study Buddy", page_icon="📚", layout="wide")
+
+
+# ---------------------------------------------------------------------------
+# CSS
+# ---------------------------------------------------------------------------
+
+
+def _inject_css() -> None:
+    st.markdown(
+        """
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
+
+        html, body, [class*="css"] {
+            font-family: 'Source Serif 4', Georgia, serif;
+        }
+
+        h1, h2, h3, h4, h5, h6,
+        .stButton > button,
+        .stSelectbox label,
+        .stRadio label,
+        [data-testid="stMetricLabel"],
+        [data-testid="stMetricValue"],
+        [data-testid="stCaptionContainer"],
+        .stProgress,
+        .stDataFrame {
+            font-family: 'Syne', sans-serif !important;
+        }
+
+        #MainMenu, footer { visibility: hidden; }
+
+        /* ── Question navigator grid ─────────────────────────── */
+        .q-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+            margin: 6px 0 12px 0;
+        }
+        .q-cell {
+            border-radius: 5px;
+            padding: 6px 2px;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: default;
+            line-height: 1.2;
+        }
+        .q-current {
+            background: #2563eb;
+            box-shadow: 0 0 0 2px #93c5fd;
+        }
+        .q-correct  { background: #15803d; }
+        .q-wrong    { background: #b91c1c; }
+        .q-pending  { background: #1e293b; color: #64748b; }
+
+        /* ── Legend ──────────────────────────────────────────── */
+        .q-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            font-family: 'Syne', sans-serif;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .q-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .q-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        /* ── Exam header bar ─────────────────────────────────── */
+        .exam-header {
+            background: linear-gradient(135deg, #0f2044 0%, #1e293b 100%);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 10px;
+            padding: 10px 18px;
+            margin-bottom: 14px;
+        }
+        .exam-header-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin: 0;
+            line-height: 1.3;
+        }
+        .exam-header-version {
+            font-family: 'Syne', sans-serif;
+            font-size: 11px;
+            color: #64748b;
+            margin: 1px 0 0 0;
+        }
+
+        /* ── Review mode banner ──────────────────────────────── */
+        .review-banner {
+            background: rgba(245, 158, 11, 0.08);
+            border-left: 3px solid #f59e0b;
+            border-radius: 0 8px 8px 0;
+            padding: 8px 14px;
+            margin-bottom: 16px;
+            font-family: 'Syne', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fbbf24;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── Code blocks in question text ────────────────────── */
+        code, pre, .stCode {
+            font-family: 'JetBrains Mono', monospace !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -59,10 +184,118 @@ def _init_state() -> None:
         "show_explanation": False,
         "last_answer_result": None,
         "selected_file": None,
+        # {q_idx: {selected, correct, is_correct, explanation}} — in-memory
+        # record of answers for the current session, used by the navigator.
+        "answered_questions": {},
     }
     for key, val in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = val
+
+
+# ---------------------------------------------------------------------------
+# Sidebar — question navigator (shown only during an exam)
+# ---------------------------------------------------------------------------
+
+
+def _render_exam_sidebar() -> None:
+    if st.session_state.get("page") != "exam":
+        return
+    exam = st.session_state.get("current_exam")
+    if not exam:
+        return
+
+    questions = exam["questions"]
+    total = len(questions)
+    current_idx = st.session_state["question_index"]
+    answered: dict = st.session_state["answered_questions"]
+    session_id = st.session_state["current_session_id"]
+
+    n_answered = len(answered)
+    n_correct = sum(1 for v in answered.values() if v["is_correct"])
+
+    # ── Exam identity ────────────────────────────────────────────────────
+    exam_name = exam.get("exam", "Exam")
+    version = exam.get("version", "")
+    st.sidebar.markdown(f"**{exam_name}**")
+    if version:
+        st.sidebar.caption(version)
+    st.sidebar.divider()
+
+    # ── Progress stats ───────────────────────────────────────────────────
+    col_a, col_b = st.sidebar.columns(2)
+    col_a.metric("Answered", f"{n_answered}/{total}")
+    col_b.metric("Correct", f"{n_correct}/{n_answered}" if n_answered else "—")
+    st.sidebar.progress(n_answered / total if total else 0)
+    st.sidebar.divider()
+
+    # ── Visual question grid ─────────────────────────────────────────────
+    st.sidebar.markdown("**Questions**")
+    cells = ""
+    for i in range(total):
+        if i == current_idx:
+            cls = "q-current"
+            label = f"▶{i + 1}"
+        elif i in answered:
+            cls = "q-correct" if answered[i]["is_correct"] else "q-wrong"
+            label = str(i + 1)
+        else:
+            cls = "q-pending"
+            label = str(i + 1)
+        cells += f'<div class="q-cell {cls}">{label}</div>'
+
+    st.sidebar.markdown(
+        f'<div class="q-grid">{cells}</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.sidebar.markdown(
+        '<div class="q-legend">'
+        '<span><span class="q-dot" style="background:#2563eb"></span>Current</span>'
+        '<span><span class="q-dot" style="background:#15803d"></span>Correct</span>'
+        '<span><span class="q-dot" style="background:#b91c1c"></span>Wrong</span>'
+        '<span><span class="q-dot" style="background:#1e293b;border:1px solid #334155"></span>Pending</span>'
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    st.sidebar.divider()
+
+    # ── Jump-to navigation ───────────────────────────────────────────────
+    st.sidebar.markdown("**Jump to Question**")
+
+    options = []
+    for i in range(total):
+        if i == current_idx:
+            prefix = "▶"
+        elif i in answered:
+            prefix = "✓" if answered[i]["is_correct"] else "✗"
+        else:
+            prefix = "○"
+        options.append(f"{prefix}  Q{i + 1}")
+
+    target_label = st.sidebar.selectbox(
+        "Select question",
+        options,
+        index=current_idx,
+        key=f"nav_select_{session_id}",
+        label_visibility="collapsed",
+    )
+    target_idx = options.index(target_label)
+
+    if st.sidebar.button("Go →", use_container_width=True):
+        _navigate_to(target_idx, answered)
+
+
+def _navigate_to(q_idx: int, answered: dict) -> None:
+    """Navigate the exam to a specific question index."""
+    st.session_state["question_index"] = q_idx
+    if q_idx in answered:
+        st.session_state["show_explanation"] = True
+        st.session_state["last_answer_result"] = answered[q_idx]
+    else:
+        st.session_state["show_explanation"] = False
+        st.session_state["last_answer_result"] = None
+    st.rerun()
 
 
 # ---------------------------------------------------------------------------
@@ -122,6 +355,7 @@ def render_exam_select() -> None:
                 st.session_state["question_index"] = 0
                 st.session_state["show_explanation"] = False
                 st.session_state["last_answer_result"] = None
+                st.session_state["answered_questions"] = {}
                 st.session_state["page"] = "exam"
                 st.rerun()
         st.divider()
@@ -134,6 +368,7 @@ def render_exam() -> None:
     total = len(questions)
     idx = st.session_state["question_index"]
     session_id = st.session_state["current_session_id"]
+    answered: dict = st.session_state["answered_questions"]
 
     # Completion guard (handles edge case where idx overshoots)
     if idx >= total:
@@ -142,19 +377,75 @@ def render_exam() -> None:
         st.rerun()
         return
 
+    # ── Header: exam name (left) + Quit button (right) ──────────────────
+    exam_name = exam.get("exam", "Exam")
+    version = exam.get("version", "")
+    version_str = f'<p class="exam-header-version">{version}</p>' if version else ""
+
+    hdr_col, quit_col = st.columns([8, 1])
+    with hdr_col:
+        st.markdown(
+            f'<div class="exam-header">'
+            f'<p class="exam-header-name">{exam_name}</p>'
+            f"{version_str}"
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+    with quit_col:
+        # Align the quit button vertically with the header box
+        st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
+        if st.button("🚪 Quit", key="quit_top", use_container_width=True):
+            db.finalize_session(engine, session_id, "quit")
+            st.session_state["page"] = "score"
+            st.rerun()
+
+    # ── Progress ─────────────────────────────────────────────────────────
     st.progress(idx / total, text=f"Question {idx + 1} of {total}")
 
+    # ── Question content ─────────────────────────────────────────────────
     question = questions[idx]
     options = question["options"]
     option_keys = sorted(options.keys())
-    option_labels = [f"**{k}** — {options[k]}" for k in option_keys]
 
-    st.caption(f"Section: {question['section_title']}")
+    section_title = question.get("section_title") or "General"
+    st.caption(f"Section: {section_title}")
     st.markdown(f"**Question {idx + 1} of {total}**")
     st.markdown(question["question_text"])
 
-    if not st.session_state["show_explanation"]:
-        # ── Answering phase ──────────────────────────────────────────────
+    is_reviewing = idx in answered
+
+    if is_reviewing:
+        # ── Review mode: viewing a previously answered question ───────────
+        st.markdown(
+            '<div class="review-banner">👁  Reviewing your previous answer</div>',
+            unsafe_allow_html=True,
+        )
+        result = answered[idx]
+        _render_answer_reveal(options, option_keys, result)
+
+        st.divider()
+        nav_l, nav_m, nav_r = st.columns(3)
+        with nav_l:
+            if idx > 0 and st.button("← Previous", use_container_width=True):
+                _navigate_to(idx - 1, answered)
+        with nav_m:
+            first_unanswered = next(
+                (i for i in range(total) if i not in answered), None
+            )
+            if first_unanswered is not None:
+                if st.button(
+                    "▶ Resume Exam",
+                    use_container_width=True,
+                    type="primary",
+                ):
+                    _navigate_to(first_unanswered, answered)
+        with nav_r:
+            if idx + 1 < total and st.button("Next →", use_container_width=True):
+                _navigate_to(idx + 1, answered)
+
+    elif not st.session_state["show_explanation"]:
+        # ── Answering phase ───────────────────────────────────────────────
+        option_labels = [f"**{k}** — {options[k]}" for k in option_keys]
         selected_label = st.radio(
             "Choose your answer:",
             option_labels,
@@ -163,80 +454,72 @@ def render_exam() -> None:
         )
 
         st.divider()
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button(
-                "Submit Answer",
-                disabled=selected_label is None,
-                type="primary",
-                use_container_width=True,
-            ):
-                # Extract letter from "**A** — ..." → split on ** gives ['', 'A', ' — ...']
-                selected_letter = selected_label.split("**")[1]
-                correct_letter = question["correct_answer"]
-                is_correct = selected_letter == correct_letter
+        if st.button(
+            "Submit Answer",
+            disabled=selected_label is None,
+            type="primary",
+            use_container_width=True,
+        ):
+            selected_letter = selected_label.split("**")[1]
+            correct_letter = question["correct_answer"]
+            is_correct = selected_letter == correct_letter
 
-                db.save_answer(engine, session_id, question, selected_letter, is_correct)
-                st.session_state["show_explanation"] = True
-                st.session_state["last_answer_result"] = {
-                    "selected": selected_letter,
-                    "correct": correct_letter,
-                    "is_correct": is_correct,
-                    "explanation": question.get("explanation", ""),
-                }
-                st.rerun()
-        with col2:
-            if st.button("🚪 Quit Exam", use_container_width=True):
-                db.finalize_session(engine, session_id, "quit")
-                st.session_state["page"] = "score"
-                st.rerun()
+            db.save_answer(engine, session_id, question, selected_letter, is_correct)
+
+            result = {
+                "selected": selected_letter,
+                "correct": correct_letter,
+                "is_correct": is_correct,
+                "explanation": question.get("explanation", ""),
+            }
+            st.session_state["answered_questions"][idx] = result
+            st.session_state["show_explanation"] = True
+            st.session_state["last_answer_result"] = result
+            st.rerun()
 
     else:
-        # ── Explanation phase ────────────────────────────────────────────
+        # ── Explanation phase: just submitted ─────────────────────────────
         result = st.session_state["last_answer_result"]
-
-        for k in option_keys:
-            if k == result["correct"] and k == result["selected"]:
-                st.markdown(f"✅ **{k}:** {options[k]}")
-            elif k == result["correct"]:
-                st.markdown(f"✅ **{k}:** {options[k]}")
-            elif k == result["selected"]:
-                st.markdown(f"❌ **{k}:** {options[k]}")
-            else:
-                st.markdown(f"&ensp;**{k}:** {options[k]}")
+        _render_answer_reveal(options, option_keys, result)
 
         st.divider()
-        if result["is_correct"]:
-            st.success("✓ Correct!")
-        else:
-            st.error(
-                f"✗ Incorrect — correct answer was **{result['correct']}**: "
-                f"{options[result['correct']]}"
-            )
-
-        if result["explanation"]:
-            with st.container(border=True):
-                st.markdown(f"**Explanation:** {result['explanation']}")
-
-        st.divider()
-        col1, col2 = st.columns(2)
-        with col1:
-            is_last = (idx + 1) >= total
-            next_label = "✅ Finish Exam" if is_last else "Next Question →"
-            if st.button(next_label, type="primary", use_container_width=True):
-                new_idx = idx + 1
-                st.session_state["question_index"] = new_idx
-                st.session_state["show_explanation"] = False
-                st.session_state["last_answer_result"] = None
-                if new_idx >= total:
-                    db.finalize_session(engine, session_id, "completed")
-                    st.session_state["page"] = "score"
-                st.rerun()
-        with col2:
-            if st.button("🚪 Quit Exam", use_container_width=True):
-                db.finalize_session(engine, session_id, "quit")
+        is_last = (idx + 1) >= total
+        next_label = "✅ Finish Exam" if is_last else "Next Question →"
+        if st.button(next_label, type="primary", use_container_width=True):
+            new_idx = idx + 1
+            st.session_state["question_index"] = new_idx
+            st.session_state["show_explanation"] = False
+            st.session_state["last_answer_result"] = None
+            if new_idx >= total:
+                db.finalize_session(engine, session_id, "completed")
                 st.session_state["page"] = "score"
-                st.rerun()
+            st.rerun()
+
+
+def _render_answer_reveal(options: dict, option_keys: list, result: dict) -> None:
+    """Render the answer options with correct/incorrect highlighting."""
+    for k in option_keys:
+        if k == result["correct"] and k == result["selected"]:
+            st.markdown(f"✅ **{k}:** {options[k]}")
+        elif k == result["correct"]:
+            st.markdown(f"✅ **{k}:** {options[k]}")
+        elif k == result["selected"]:
+            st.markdown(f"❌ **{k}:** {options[k]}")
+        else:
+            st.markdown(f"&ensp;**{k}:** {options[k]}")
+
+    st.divider()
+    if result["is_correct"]:
+        st.success("✓ Correct!")
+    else:
+        st.error(
+            f"✗ Incorrect — correct answer was **{result['correct']}**: "
+            f"{options[result['correct']]}"
+        )
+
+    if result.get("explanation"):
+        with st.container(border=True):
+            st.markdown(f"**Explanation:** {result['explanation']}")
 
 
 def render_score() -> None:
@@ -309,6 +592,7 @@ def render_score() -> None:
                 st.session_state["question_index"] = 0
                 st.session_state["show_explanation"] = False
                 st.session_state["last_answer_result"] = None
+                st.session_state["answered_questions"] = {}
                 st.session_state["page"] = "exam"
             else:
                 st.session_state["page"] = "exam_select"
@@ -379,7 +663,9 @@ def render_history() -> None:
 
 
 def main() -> None:
+    _inject_css()
     _init_state()
+    _render_exam_sidebar()
 
     # Identify and register user on first load
     if st.session_state["user"] is None:
