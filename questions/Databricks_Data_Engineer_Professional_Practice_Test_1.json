@@ -6,12 +6,63 @@
     "time_limit_minutes": null,
     "passing_note": "Multiple-choice, single answer per question"
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": 1,
+      "title": "Developing Code for Data Processing using Python and SQL",
+      "weight_description": "Covers Python tooling, UDFs, Lakeflow Spark Declarative Pipelines, Spark Structured Streaming, Jobs, control flow, testing, environment config"
+    },
+    {
+      "id": 2,
+      "title": "Data Ingestion & Acquisition",
+      "weight_description": "Covers ingesting diverse data formats (Delta, Parquet, ORC, AVRO, JSON, CSV, XML, Text, Binary) from message buses and cloud storage; append-only pipelines"
+    },
+    {
+      "id": 3,
+      "title": "Data Transformation, Cleansing, and Quality",
+      "weight_description": "Covers Spark SQL/PySpark transformations (window functions, joins, aggregations), quarantining bad data"
+    },
+    {
+      "id": 4,
+      "title": "Data Sharing and Federation",
+      "weight_description": "Covers Delta Sharing (D2D, D2O), Lakehouse Federation, sharing live data across platforms"
+    },
+    {
+      "id": 5,
+      "title": "Monitoring and Alerting",
+      "weight_description": "Covers system tables, Query Profiler, Spark UI, REST APIs/CLI monitoring, Lakeflow event logs, SQL Alerts, job notifications"
+    },
+    {
+      "id": 6,
+      "title": "Cost & Performance Optimisation",
+      "weight_description": "Covers Unity Catalog managed tables, delta optimisation (deletion vectors, liquid clustering), data skipping, file pruning, CDF, query profile analysis"
+    },
+    {
+      "id": 7,
+      "title": "Ensuring Data Security and Compliance",
+      "weight_description": "Covers ACLs/least privilege, row filters/column masks, anonymisation/pseudonymisation, PII detection/masking, data purging/retention"
+    },
+    {
+      "id": 8,
+      "title": "Data Governance",
+      "weight_description": "Covers data discoverability/metadata, Unity Catalog permission inheritance"
+    },
+    {
+      "id": 9,
+      "title": "Debugging and Deploying",
+      "weight_description": "Covers Spark UI, cluster logs, system tables, query profiles, job repairs/parameter overrides, Lakeflow event logs, Databricks Asset Bundles, Git-based CI/CD"
+    },
+    {
+      "id": 10,
+      "title": "Data Modelling",
+      "weight_description": "Covers scalable data models with Delta Lake, Liquid Clustering, partitioning vs ZOrder, dimensional modelling"
+    }
+  ],
   "questions": [
     {
       "id": 1,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand how to pass parameters from Databricks Jobs to notebooks.",
       "question_text": "A data engineer wants to pass multiple parameters from a Databricks Job to a notebook. They already configured the key and value of each parameter in the configurations of the job.\n\nWhich of the following utilities can the data engineer use to read the passed parameters inside the notebook?",
       "options": {
@@ -26,8 +77,8 @@
     },
     {
       "id": 2,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 6,
+      "section_title": "Cost & Performance Optimisation",
       "objective": "Understand the benefit of Delta Lake File Statistics.",
       "question_text": "Which of the following is the benefit of Delta Lake File Statistics?",
       "options": {
@@ -42,8 +93,8 @@
     },
     {
       "id": 3,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 8,
+      "section_title": "Data Governance",
       "objective": "Understand Databricks Job ownership and permission transfer rules.",
       "question_text": "The data engineering team created a new Databricks job for processing sensitive financial data. A financial analyst asked the team to transfer the \"Owner\" privilege of this job to the \"finance\" group.\n\nA junior data engineer that has the \"CAN MANAGE\" permission on the job is attempting to make this privilege transfer via Databricks Job UI, but it keeps failing.\n\nWhich of the following explains the cause of this failure?",
       "options": {
@@ -59,8 +110,8 @@
     },
     {
       "id": 4,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 6,
+      "section_title": "Cost & Performance Optimisation",
       "objective": "Understand the impact of over-partitioning on Delta Lake table performance.",
       "question_text": "The data engineering team noticed that a partitioned Delta Lake table is suffering greatly. They are experiencing slowdowns for most general queries on this table.\n\nThe team tried to run an OPTIMIZE command on the table, but this did not help to resolve the issue.\n\nWhich of the following likely explains the cause of these slowdowns?",
       "options": {
@@ -75,8 +126,8 @@
     },
     {
       "id": 5,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 7,
+      "section_title": "Ensuring Data Security and Compliance",
       "objective": "Understand DELETE behaviour in Delta Lake and the role of VACUUM for GDPR compliance.",
       "question_text": "The data engineering team has the following query for processing customers' requests to be forgotten:\n\n```sql\nDELETE FROM customers\nWHERE customer_id IN\n(SELECT customer_id FROM delete_requests)\n```\n\nWhich statement describes the results of executing this query?",
       "options": {
@@ -91,8 +142,8 @@
     },
     {
       "id": 6,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 7,
+      "section_title": "Ensuring Data Security and Compliance",
       "objective": "Understand Databricks secret scope permission levels.",
       "question_text": "The data engineering team has a secret scope named 'DataOps-Prod' that contains all secrets needed by DataOps engineers in a production workspace.\n\nWhich of the following is the minimum permission required for the DataOps engineers to use the secrets in this scope?",
       "options": {
@@ -107,8 +158,8 @@
     },
     {
       "id": 7,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 5,
+      "section_title": "Monitoring and Alerting",
       "objective": "Know what metrics are available in the Ganglia UI.",
       "question_text": "Which of the following is Not part of the Ganglia UI?",
       "options": {
@@ -123,8 +174,8 @@
     },
     {
       "id": 8,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 5,
+      "section_title": "Monitoring and Alerting",
       "objective": "Know the metrics available in the Spark UI stage details page.",
       "question_text": "In Spark UI, which of the following is Not part of the metrics displayed in a stage's details page?",
       "options": {
@@ -139,8 +190,8 @@
     },
     {
       "id": 9,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 5,
+      "section_title": "Monitoring and Alerting",
       "objective": "Understand the response structure of the Databricks Jobs REST API for multi-task job runs.",
       "question_text": "A data engineer is using Databricks REST API to send a GET request to the endpoint 'api/2.1/jobs/runs/get' to retrieve the run's metadata of a multi-task job using its run_id.\n\nWhich statement correctly describes the response structure of this API call?",
       "options": {
@@ -155,8 +206,8 @@
     },
     {
       "id": 10,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand what DBFS is.",
       "question_text": "Which of the following statements best describes DBFS?",
       "options": {
@@ -171,8 +222,8 @@
     },
     {
       "id": 11,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Know how to install notebook-scoped Python libraries.",
       "question_text": "A data engineer wants to install a Python wheel scoped to the current notebook's session, so only the current notebook and any jobs associated with this notebook have access to that library.\n\nWhich of the following commands can the data engineer use to complete this task?",
       "options": {
@@ -187,8 +238,8 @@
     },
     {
       "id": 12,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand the purpose of the sys.path Python variable.",
       "question_text": "Which of the following statements correctly describes the sys.path Python variable?",
       "options": {
@@ -203,8 +254,8 @@
     },
     {
       "id": 13,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand assertions in unit testing.",
       "question_text": "Which of the following statements correctly describes assertions in unit testing?",
       "options": {
@@ -219,8 +270,8 @@
     },
     {
       "id": 14,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand end-to-end testing.",
       "question_text": "Which of the following statements correctly describes End-to-End Testing?",
       "options": {
@@ -235,8 +286,8 @@
     },
     {
       "id": 15,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 9,
+      "section_title": "Debugging and Deploying",
       "objective": "Know the unique identifier returned when triggering a job run via REST API.",
       "question_text": "When running an existing job via Databricks REST API, which of the following represents the globally unique identifier of the newly triggered run?",
       "options": {
@@ -251,8 +302,8 @@
     },
     {
       "id": 16,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Know the recommended retry policy for production Structured Streaming jobs.",
       "question_text": "For production Structured Streaming jobs, which of the following retry policies is recommended to use?",
       "options": {
@@ -267,8 +318,8 @@
     },
     {
       "id": 17,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 3,
+      "section_title": "Data Transformation, Cleansing, and Quality",
       "objective": "Understand CHECK constraint behaviour when existing data violates the constraint.",
       "question_text": "The data engineering team has a large Delta table named `users`. A recent query on the table returned some entries with negative values in the `age` column.\n\nTo avoid this issue and enforce data quality, a junior data engineer decided to add a `CHECK` constraint to the table with the following command:\n\n```sql\nALTER TABLE users ADD CONSTRAINT valid_age CHECK (age > 0);\n```\n\nHowever, the command fails when executed.\n\nWhich statement explains the cause of this failure?",
       "options": {
@@ -283,8 +334,8 @@
     },
     {
       "id": 18,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 7,
+      "section_title": "Ensuring Data Security and Compliance",
       "objective": "Understand cluster permission levels for viewing metrics, logs, and Spark UI.",
       "question_text": "Which of the following describes the minimal permissions a data engineer needs to view the metrics, driver logs, and Spark UI of an existing cluster?",
       "options": {
@@ -299,8 +350,8 @@
     },
     {
       "id": 19,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 7,
+      "section_title": "Ensuring Data Security and Compliance",
       "objective": "Understand cluster permission levels for starting and terminating clusters.",
       "question_text": "Which of the following describes the minimal permissions a data engineer needs to start and terminate an existing cluster?",
       "options": {
@@ -315,8 +366,8 @@
     },
     {
       "id": 20,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 7,
+      "section_title": "Ensuring Data Security and Compliance",
       "objective": "Understand cluster permission levels for editing cluster configurations.",
       "question_text": "Which of the following describes the minimal permissions a data engineer needs to edit the configurations of an existing cluster?",
       "options": {
@@ -331,8 +382,8 @@
     },
     {
       "id": 21,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 2,
+      "section_title": "Data Ingestion & Acquisition",
       "objective": "Understand when Change Data Feed (CDF) is appropriate to use.",
       "question_text": "The data engineering team maintains a Type 1 table that is overwritten each night with new data received from the source system.\n\nA junior data engineer has suggested enabling the Change Data Feed (CDF) feature on the table in order to identify those rows that were updated, inserted, or deleted.\n\nWhich response to the junior data engineer's suggestion is correct?",
       "options": {
@@ -347,8 +398,8 @@
     },
     {
       "id": 22,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Identify Slowly Changing Dimension (SCD) types from data examples.",
       "question_text": "Given the following two versions of a Delta Lake table before and after an update:\n\nBefore:\n| user_id | name  | address              | city   |\n|---------|-------|----------------------|--------|\n| 001     | John  | 4, Oxford Street     | London |\n| 002     | Sarah | 99, Victor Hugo Street | Paris |\n\nAfter:\n| user_id | name  | address              | city   |\n|---------|-------|----------------------|--------|\n| 001     | John  | 25, King's Road      | London |\n| 002     | Sarah | 99, Victor Hugo Street | Paris |\n\nWhich SCD Type is this table?",
       "options": {
@@ -363,8 +414,8 @@
     },
     {
       "id": 23,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 5,
+      "section_title": "Monitoring and Alerting",
       "objective": "Interpret Spark UI summary metrics to identify data skew.",
       "question_text": "A data engineer is analyzing a Spark job via the Spark UI. They have the following summary metrics for 27 completed tasks in a particular stage:\n\n| Metric | Min | 25th percentile | Median | 75th percentile | Max |\n|---|---|---|---|---|---|\n| Duration | 1.6 s | 2 s | 2 s | 3 s | 30 s |\n| GC Time | 20.0 ms | 32.0 ms | 44.0 ms | 51.0 ms | 1.9 s |\n| Input Size / Records | 78 KiB / 16 | 179 KiB / 49 | 183.9 KiB / 55 | 186.7 KiB / 67 | 803 KiB / 276 |\n| Shuffle Write Size / Records | 1.4 KiB / 16 | 6.1 KiB / 49 | 6.9 KiB / 55 | 8.1 KiB / 67 | 300.8 KiB / 276 |\n\nWhich conclusion can the data engineer draw from the above statistics?",
       "options": {
@@ -379,8 +430,8 @@
     },
     {
       "id": 24,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 7,
+      "section_title": "Ensuring Data Security and Compliance",
       "objective": "Understand cluster permission levels for attaching notebooks.",
       "question_text": "Which of the following describes the minimal permissions a data engineer needs to attach a notebook to an existing cluster?",
       "options": {
@@ -395,8 +446,8 @@
     },
     {
       "id": 25,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand Spark Structured Streaming windowed aggregations with watermarking.",
       "question_text": "Given the following streaming query:\n\n```python\nspark.readStream\n  .table(\"orders_cleaned\")\n  .withWatermark(\"order_timestamp\", \"10 minutes\")\n  .groupBy(\n    window(\"order_timestamp\", \"5 minutes\").alias(\"time\"),\n    \"author\")\n  .agg(\n    count(\"order_id\").alias(\"orders_count\"),\n    avg(\"quantity\").alias(\"avg_quantity\"))\n  .writeStream\n  .option(\"checkpointLocation\", \"dbfs:/path/checkpoint\")\n  .table(\"orders_stats\")\n```\n\nWhich of the following statements best describes this query?",
       "options": {
@@ -411,8 +462,8 @@
     },
     {
       "id": 26,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Understand DROP TABLE behaviour for managed Delta tables created with CTAS.",
       "question_text": "The data engineering team has a Delta Lake table created with the following query:\n\n```sql\nCREATE TABLE customers_clone\nAS SELECT * FROM customers\n```\n\nA data engineer wants to drop the table with the following query:\n\n```sql\nDROP TABLE customers_clone\n```\n\nWhich statement describes the result of running this drop command?",
       "options": {
@@ -427,8 +478,8 @@
     },
     {
       "id": 27,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 3,
+      "section_title": "Data Transformation, Cleansing, and Quality",
       "objective": "Know how to verify CHECK constraints on a Delta table.",
       "question_text": "A data engineer added a `CHECK` constraint to the table using the following command:\n\n```sql\nALTER TABLE sales ADD CONSTRAINT valid_date CHECK (item_date >= '2023-01-01');\n```\n\nWhich of the following commands allows the data engineer to verify that the constraint has been successfully added on the table?",
       "options": {
@@ -443,8 +494,8 @@
     },
     {
       "id": 28,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Know how to sync changes to a deep clone table.",
       "question_text": "A data engineer has a Delta Lake table named `orders_archive` created using the following command:\n\n```sql\nCREATE TABLE orders_archive\nDEEP CLONE orders\n```\n\nThey want to sync up the new changes in the `orders` table to the clone.\n\nWhich of the following commands can be run to achieve this task?",
       "options": {
@@ -459,8 +510,8 @@
     },
     {
       "id": 29,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Understand CTAS statement capabilities and limitations.",
       "question_text": "Which of the following statements is Not true about CTAS statements?",
       "options": {
@@ -475,8 +526,8 @@
     },
     {
       "id": 30,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 9,
+      "section_title": "Debugging and Deploying",
       "objective": "Understand the purpose of the '# Databricks notebook source' comment.",
       "question_text": "A data engineer has noticed the comment `# Databricks notebook source` on the first line of each Databricks Python file's source code pushed to Github.\n\nWhich of the following explains the purpose of this comment?",
       "options": {
@@ -491,8 +542,8 @@
     },
     {
       "id": 31,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand multi-task job behaviour when a task fails with independent (parallel) dependencies.",
       "question_text": "Given a multi-task job where Task_1 is upstream, and Task_2 and Task_3 are both downstream of Task_1 (running in parallel).\n\nIf there is an error in the notebook 2 that is associated with Task 2, which statement describes the run result of this job?",
       "options": {
@@ -507,8 +558,8 @@
     },
     {
       "id": 32,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Know how to execute SQL within a foreachBatch function on Databricks Runtime below 10.5.",
       "question_text": "A data engineer is using a `foreachBatch` logic to upsert data in a target Delta table. The function to be called at each new microbatch processing is displayed below with a blank:\n\n```python\ndef upsert_data(microBatchDF, batch_id):\n    microBatchDF.createOrReplaceTempView(\"sales_microbatch\")\n    sql_query = \"\"\"\n        MERGE INTO sales_silver a\n        USING sales_microbatch b\n        ON a.item_id=b.item_id\n        AND a.item_timestamp=b.item_timestamp\n        WHEN NOT MATCHED THEN INSERT *\n    \"\"\"\n    ________________\n```\n\nWhich option correctly fills in the blank to execute the SQL query in the function on a cluster with Databricks Runtime below 10.5?",
       "options": {
@@ -523,8 +574,8 @@
     },
     {
       "id": 33,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand how to use withWatermark for handling late-arriving data in streaming.",
       "question_text": "A data engineer has the following streaming query with a blank:\n\n```python\nspark.readStream\n  .table(\"orders_cleaned\")\n  ____________________________\n  .groupBy(\n    \"order_timestamp\",\n    \"author\")\n  .agg(\n    count(\"order_id\").alias(\"orders_count\"),\n    avg(\"quantity\").alias(\"avg_quantity\"))\n  .writeStream\n  .option(\"checkpointLocation\", \"dbfs:/path/checkpoint\")\n  .table(\"orders_stats\")\n```\n\nFor handling late-arriving data, they want to maintain the streaming state information for 30 minutes.\n\nWhich option correctly fills in the blank to meet this requirement?",
       "options": {
@@ -539,8 +590,8 @@
     },
     {
       "id": 34,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Understand DROP TABLE behaviour on a source table when a CTAS-derived table exists.",
       "question_text": "The data engineering team has a Delta Lake table created with the following query:\n\n```sql\nCREATE TABLE target\nAS SELECT * FROM source\n```\n\nA data engineer wants to drop the source table with the following query:\n\n```sql\nDROP TABLE source\n```\n\nWhich statement describes the result of running this drop command?",
       "options": {
@@ -555,8 +606,8 @@
     },
     {
       "id": 35,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Understand DROP TABLE behaviour for external (unmanaged) Delta tables.",
       "question_text": "The data engineering team has a Delta Lake table created with the following query:\n\n```sql\nCREATE TABLE customers_clone\nLOCATION 'dbfs:/mnt/backup'\nAS SELECT * FROM customers\n```\n\nA data engineer wants to drop the table with the following query:\n\n```sql\nDROP TABLE customers_clone\n```\n\nWhich statement describes the result of running this drop command?",
       "options": {
@@ -571,8 +622,8 @@
     },
     {
       "id": 36,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 7,
+      "section_title": "Ensuring Data Security and Compliance",
       "objective": "Understand how Databricks secrets are redacted in notebook output.",
       "question_text": "Given the following code block in a notebook:\n\n```python\ndb_password = dbutils.secrets.get(scope=\"dev\", key=\"database_password\")\nprint(db_password)\n```\n\nWhich statement describes what will happen when the above code is executed?",
       "options": {
@@ -587,8 +638,8 @@
     },
     {
       "id": 37,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand the limitations of the %sh magic command.",
       "question_text": "A junior data engineer is using the %sh magic command to run some legacy code. A senior data engineer has recommended refactoring the code instead.\n\nWhich of the following could explain why a data engineer may need to avoid using the %sh magic command?",
       "options": {
@@ -603,8 +654,8 @@
     },
     {
       "id": 38,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 6,
+      "section_title": "Cost & Performance Optimisation",
       "objective": "Understand how Delta Lake file statistics enable data skipping for query optimisation.",
       "question_text": "Given a Delta table `products` with the following schema:\n\n```\nname STRING, category STRING, expiration_date DATE, price FLOAT\n```\n\nWhen executing the below query:\n\n```sql\nSELECT * FROM products\nWHERE price > 30.5\n```\n\nWhich of the following will be leveraged by the query optimizer to identify the data files to load?",
       "options": {
@@ -619,8 +670,8 @@
     },
     {
       "id": 39,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Understand how VACUUM on a source table affects shallow clones.",
       "question_text": "The data engineering team has a table `orders_backup` that was created using Delta Lake's `SHALLOW CLONE` functionality from the table `orders`. Recently, the team started getting an error when querying the `orders_backup` table indicating that some data files are no longer present.\n\nWhich of the following correctly explains this error?",
       "options": {
@@ -635,8 +686,8 @@
     },
     {
       "id": 40,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Use Delta Lake Time Travel with set operations to compare table versions.",
       "question_text": "The data engineering team has a Delta Lake table named `daily_activities` that is completely overwritten each night with new data. For auditing purposes, the team wants to determine the difference between the new version and the previous version of the table. They start by getting the current table version:\n\n```python\ncurrent_version = spark.sql(\"SELECT max(version) FROM (DESCRIBE HISTORY daily_activities)\").collect()[0][0]\n```\n\nWhich of the following queries can be used to complete this task?",
       "options": {
@@ -651,8 +702,8 @@
     },
     {
       "id": 41,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 2,
+      "section_title": "Data Ingestion & Acquisition",
       "objective": "Know how to handle CDC feeds with multiple changes per key in the same batch.",
       "question_text": "The data engineering team wants to build a pipeline that receives customer data as a change data capture (CDC) feed from a source system. The CDC events contain record data along with metadata indicating whether the record was inserted, updated, or deleted. A timestamp field update_time indicates the order of changes. Each record has a primary key customer_id.\n\nIn the same batch, multiple changes for the same customer could be received with different update_time. The team wants to store only the most recent information for each customer in the target Delta Lake table.\n\nWhich of the following solutions meets these requirements?",
       "options": {
@@ -667,8 +718,8 @@
     },
     {
       "id": 42,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 2,
+      "section_title": "Data Ingestion & Acquisition",
       "objective": "Choose the most cost-effective incremental batch processing approach.",
       "question_text": "The data engineering team has a singleplex bronze table called 'orders_raw' where new orders data is appended every night. They created a new Silver table called 'orders_cleaned' for a more refined view.\n\nThe team wants to create a batch processing pipeline to process all new records inserted in orders_raw and propagate them to orders_cleaned.\n\nWhich solution minimizes the compute costs to propagate this batch of data?",
       "options": {
@@ -683,8 +734,8 @@
     },
     {
       "id": 43,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Choose the right materialisation strategy (view vs table) based on cost and latency requirements.",
       "question_text": "The data engineering team has a Silver table called 'sales_cleaned' where new sales data is appended in near real-time. They want to create a new Gold-layer entity to calculate year-to-date (YTD) sales amount with schema:\n\ncountry_code STRING, category STRING, ytd_total_sales FLOAT, updated TIMESTAMP\n\nThe metrics only need to be recalculated once daily. But since they will be queried very frequently by several business teams, the team wants to cut down the potential costs and latency associated with materialising the results.\n\nWhich of the following solutions meets these requirements?",
       "options": {
@@ -699,8 +750,8 @@
     },
     {
       "id": 44,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 6,
+      "section_title": "Cost & Performance Optimisation",
       "objective": "Know the command used to compact small data files in Delta Lake.",
       "question_text": "Which of the following commands can a data engineer use to compact small data files of a Delta table into larger ones?",
       "options": {
@@ -715,8 +766,8 @@
     },
     {
       "id": 45,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 6,
+      "section_title": "Cost & Performance Optimisation",
       "objective": "Understand Auto Optimize and its two complementary operations.",
       "question_text": "\"A Delta Lake functionality that automatically compacts small files during individual writes to a table by performing two complementary operations on the table.\"\n\nWhich of the following is being described in the above statement?",
       "options": {
@@ -731,8 +782,8 @@
     },
     {
       "id": 46,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 6,
+      "section_title": "Cost & Performance Optimisation",
       "objective": "Understand how Delta Lake auto-tunes file sizes based on workload patterns.",
       "question_text": "The data engineering team has a large external Delta table where new changes are merged very frequently. They enabled Optimized Writes and Auto Compaction on the table to target files of 128 MB. However, most data files are smaller than 128 MB.\n\nWhich of the following likely explains these smaller file sizes?",
       "options": {
@@ -747,8 +798,8 @@
     },
     {
       "id": 47,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand streaming state management in Stream-Stream Joins.",
       "question_text": "Which statement regarding streaming state in Stream-Stream Joins is correct?",
       "options": {
@@ -763,8 +814,8 @@
     },
     {
       "id": 48,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand the behaviour of static Delta tables in Stream-Static Joins.",
       "question_text": "Which statement regarding static Delta tables in Stream-Static joins is correct?",
       "options": {
@@ -779,8 +830,8 @@
     },
     {
       "id": 49,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Know the recommended cluster type for production Databricks jobs.",
       "question_text": "For production Databricks jobs, which of the following cluster types is recommended to use?",
       "options": {
@@ -795,8 +846,8 @@
     },
     {
       "id": 50,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Identify incorrect statements about Spark Structured Streaming checkpointing.",
       "question_text": "Which statement regarding checkpointing in Spark Structured Streaming is Not correct?",
       "options": {
@@ -811,8 +862,8 @@
     },
     {
       "id": 51,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 6,
+      "section_title": "Cost & Performance Optimisation",
       "objective": "Understand Delta Lake Auto Compaction behaviour.",
       "question_text": "Which of the following statements best describes Delta Lake Auto Compaction?",
       "options": {
@@ -827,8 +878,8 @@
     },
     {
       "id": 52,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 2,
+      "section_title": "Data Ingestion & Acquisition",
       "objective": "Understand what Auto Loader does.",
       "question_text": "Which of the following statements best describes Auto Loader?",
       "options": {
@@ -843,8 +894,8 @@
     },
     {
       "id": 53,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 3,
+      "section_title": "Data Transformation, Cleansing, and Quality",
       "objective": "Know the correct PySpark function for deduplication based on specific columns.",
       "question_text": "Which of the following functions can a data engineer use to return a new DataFrame containing the distinct rows from a given DataFrame based on multiple columns?",
       "options": {
@@ -859,8 +910,8 @@
     },
     {
       "id": 54,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 3,
+      "section_title": "Data Transformation, Cleansing, and Quality",
       "objective": "Know the correct approach for streaming deduplication.",
       "question_text": "Which of the following approaches allows to correctly perform streaming deduplication?",
       "options": {
@@ -875,8 +926,8 @@
     },
     {
       "id": 55,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Understand the limitation of non-time-based window operations on streaming DataFrames.",
       "question_text": "A junior data engineer is testing the following code block to get the newest entry for each item added in the `sales` table since the last table update:\n\n```python\nfrom pyspark.sql import functions as F\nfrom pyspark.sql.window import Window\n\nwindow = Window.partitionBy(\"item_id\").orderBy(F.col(\"item_time\").desc())\n\nranked_df = (spark.readStream\n    .table(\"sales\")\n    .withColumn(\"rank\", F.rank().over(window))\n    .filter(\"rank == 1\")\n    .drop(\"rank\")\n)\ndisplay(ranked_df)\n```\n\nHowever, the command fails when executed.\n\nWhich statement explains the cause of this failure?",
       "options": {
@@ -891,8 +942,8 @@
     },
     {
       "id": 56,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 2,
+      "section_title": "Data Ingestion & Acquisition",
       "objective": "Understand the behaviour of streaming reads from Change Data Feed.",
       "question_text": "Given the following query on the Delta table `customers` on which Change Data Feed is enabled:\n\n```python\nspark.readStream\n  .option(\"readChangeFeed\", \"true\")\n  .option(\"startingVersion\", 0)\n  .table(\"customers\")\n  .filter(col(\"_change_type\").isin([\"update_postimage\"]))\n  .writeStream\n  .option(\"checkpointLocation\", \"dbfs:/checkpoints\")\n  .trigger(availableNow=True)\n  .table(\"customers_updates\")\n```\n\nWhich statement describes the results of this query each time it is executed?",
       "options": {
@@ -907,8 +958,8 @@
     },
     {
       "id": 57,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 2,
+      "section_title": "Data Ingestion & Acquisition",
       "objective": "Understand the behaviour of batch reads from Change Data Feed with overwrite mode.",
       "question_text": "Given the following query on the Delta table `customers` on which Change Data Feed is enabled:\n\n```python\nspark.read\n  .option(\"readChangeFeed\", \"true\")\n  .option(\"startingVersion\", 0)\n  .table(\"customers\")\n  .filter(col(\"_change_type\").isin([\"update_postimage\"]))\n  .write\n  .mode(\"overwrite\")\n  .table(\"customers_updates\")\n```\n\nWhich statement describes the results of this query each time it is executed?",
       "options": {
@@ -923,8 +974,8 @@
     },
     {
       "id": 58,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 2,
+      "section_title": "Data Ingestion & Acquisition",
       "objective": "Know the correct Auto Loader syntax for incremental near real-time ingestion.",
       "question_text": "A data engineer wants to ingest input JSON data into a target Delta table. They want the data ingestion to happen incrementally in near real-time.\n\nWhich option correctly meets the specified requirement?",
       "options": {
@@ -939,8 +990,8 @@
     },
     {
       "id": 59,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 1,
+      "section_title": "Developing Code for Data Processing using Python and SQL",
       "objective": "Know the correct trigger syntax for processing-time-based micro-batches.",
       "question_text": "Given the following Structured Streaming query:\n\n```python\n(spark.table(\"orders\")\n  .withColumn(\"total_after_tax\", col(\"total\")+col(\"tax\"))\n  .writeStream\n  .option(\"checkpointLocation\", checkpointPath)\n  .outputMode(\"append\")\n  ._____________\n  .table(\"new_orders\")\n)\n```\n\nFill in the blank to make the query execute a micro-batch to process data every 2 minutes.",
       "options": {
@@ -955,8 +1006,8 @@
     },
     {
       "id": 60,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 6,
+      "section_title": "Cost & Performance Optimisation",
       "objective": "Know where and how Delta Lake file statistics are captured.",
       "question_text": "Which statement regarding Delta Lake File Statistics is correct?",
       "options": {
@@ -971,8 +1022,8 @@
     },
     {
       "id": 61,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 8,
+      "section_title": "Data Governance",
       "objective": "Understand the USAGE privilege in Databricks governance.",
       "question_text": "A data engineer uses the following SQL query:\n\n```sql\nGRANT USAGE ON DATABASE sales_db TO finance_team\n```\n\nWhich of the following is the benefit of the `USAGE` privilege?",
       "options": {
@@ -987,8 +1038,8 @@
     },
     {
       "id": 62,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Understand the purpose of the LOCATION keyword for Delta Lake tables.",
       "question_text": "The data engineering team is using the LOCATION keyword for every new Delta Lake table created in the Lakehouse.\n\nWhich of the following describes the purpose of using the LOCATION keyword in this case?",
       "options": {
@@ -1003,8 +1054,8 @@
     },
     {
       "id": 63,
-      "section_id": null,
-      "section_title": null,
+      "section_id": 10,
+      "section_title": "Data Modelling",
       "objective": "Choose an appropriate partitioning column for a Delta Lake table.",
       "question_text": "A data engineer wants to create a Delta Lake table for storing user activities of a website. The table has the following schema:\n\n```\nuser_id LONG, page STRING, activity_type LONG,\nip_address STRING, activity_time TIMESTAMP, activity_date DATE\n```\n\nBased on the above schema, which column is a good candidate for partitioning the Delta Table?",
       "options": {
